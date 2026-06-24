@@ -1,0 +1,6 @@
+# Build scripts (not needed for hosting)
+gen/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db

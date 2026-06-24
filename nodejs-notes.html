@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learn Node.js — From Absolute Basics to Express APIs</title>
+<style>
+  :root {
+    --page-bg: #eaf2fc;
+    --card-bg: #ffffff;
+    --accent: #1657c4;
+    --accent-bright: #1f6fe0;
+    --accent-soft: #e3edfb;
+    --ink: #16202e;
+    --ink-soft: #44546a;
+    --code-bg: #0b2a52;
+    --code-ink: #d6e4ff;
+    --border: #d6e3f5;
+    --green: #1f9d57;
+    --red: #d6455a;
+    --amber: #c98a12;
+    --shadow: 0 8px 24px rgba(22, 87, 196, 0.08);
+    --shadow-lg: 0 16px 44px rgba(22, 87, 196, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--page-bg);
+    color: var(--ink);
+    line-height: 1.65;
+    font-size: 16px;
+  }
+
+  /* ---------- Layout ---------- */
+  .shell {
+    display: grid;
+    grid-template-columns: 270px 1fr;
+    max-width: 1280px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  .sidebar {
+    position: sticky;
+    top: 0;
+    align-self: start;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 28px 18px 40px;
+    border-right: 1px solid var(--border);
+  }
+
+  .sidebar .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 1.05rem;
+    color: var(--accent);
+    margin-bottom: 22px;
+    padding-left: 6px;
+  }
+  .sidebar .brand .logo {
+    width: 30px; height: 30px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+    display: grid; place-items: center;
+    color: #fff; font-weight: 800; font-size: 0.95rem;
+    box-shadow: var(--shadow);
+  }
+
+  .nav-group-title {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin: 18px 0 6px 6px;
+    font-weight: 700;
+  }
+
+  .sidebar a {
+    display: block;
+    text-decoration: none;
+    color: var(--ink-soft);
+    padding: 7px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.15s ease;
+  }
+  .sidebar a:hover { background: var(--accent-soft); color: var(--accent); }
+
+  .content {
+    padding: 0 clamp(20px, 4vw, 56px) 80px;
+    min-width: 0;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    margin: 28px 0 36px;
+    padding: 48px 44px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #1f6fe0 0%, #1657c4 55%, #0e3f93 100%);
+    color: #fff;
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: "";
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 240px; height: 240px;
+    background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+    border-radius: 50%;
+  }
+  .hero .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.74rem;
+    font-weight: 700;
+    opacity: 0.9;
+  }
+  .hero h1 {
+    margin: 12px 0 14px;
+    font-size: clamp(1.9rem, 4vw, 2.8rem);
+    line-height: 1.15;
+    font-weight: 800;
+  }
+  .hero p {
+    margin: 0;
+    max-width: 620px;
+    font-size: 1.06rem;
+    opacity: 0.95;
+  }
+  .hero .chips {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .hero .chips span {
+    background: rgba(255,255,255,0.16);
+    border: 1px solid rgba(255,255,255,0.25);
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+  }
+
+  /* ---------- Section banners ---------- */
+  .section-banner {
+    margin: 52px 0 24px;
+    padding: 22px 26px;
+    border-radius: 16px;
+    background: linear-gradient(120deg, var(--accent-soft), #f3f8ff);
+    border: 1px solid var(--border);
+    border-left: 5px solid var(--accent-bright);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .section-banner .num {
+    flex: 0 0 auto;
+    width: 46px; height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent-bright), var(--accent));
+    color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: 1.2rem;
+    box-shadow: var(--shadow);
+  }
+  .section-banner h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .section-banner p { margin: 4px 0 0; color: var(--ink-soft); font-size: 0.92rem; }
+
+  /* ---------- Cards ---------- */
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px 28px;
+    margin: 18px 0;
+    box-shadow: var(--shadow);
+  }
+  .card h3 {
+    margin: 0 0 12px;
+    font-size: 1.18rem;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .card h3 .tag {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+  .card h4 {
+    margin: 20px 0 8px;
+    font-size: 1.0rem;
+    color: var(--accent);
+  }
+  .card p { margin: 8px 0; color: var(--ink); }
+  .card ul, .card ol { margin: 8px 0; padding-left: 22px; }
+  .card li { margin: 5px 0; }
+
+  .lead { color: var(--ink-soft); font-size: 1.0rem; }
+
+  /* ---------- Code blocks (midnight) ---------- */
+  pre {
+    background: var(--code-bg);
+    color: var(--code-ink);
+    border-radius: 12px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin: 14px 0;
+    border: 1px solid #123a6b;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 18px rgba(11,42,82,0.25);
+    position: relative;
+  }
+  pre code {
+    font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New", monospace;
+    white-space: pre;
+  }
+  pre .lang {
+    position: absolute;
+    top: 0; right: 0;
+    background: #123a6b;
+    color: #8fb6f0;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    padding: 3px 10px;
+    border-radius: 0 12px 0 10px;
+    text-transform: uppercase;
+  }
+  /* syntax tokens */
+  .t-key  { color: #6db3ff; }
+  .t-str  { color: #7fe0a8; }
+  .t-num  { color: #f3b05a; }
+  .t-com  { color: #6b86ad; font-style: italic; }
+  .t-fn   { color: #c79bff; }
+  .t-out  { color: #9fd0ff; }
+
+  code.inline {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-family: "SF Mono", Consolas, monospace;
+    font-size: 0.86em;
+    font-weight: 600;
+  }
+
+  /* ---------- Callouts ---------- */
+  .callout {
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 0.94rem;
+  }
+  .callout .ico { flex: 0 0 auto; font-size: 1.15rem; line-height: 1.5; }
+  .callout.note   { background: #eef5ff; border: 1px solid #cfe0fb; color: #214a87; }
+  .callout.tip    { background: #ecfaf1; border: 1px solid #c2ebd2; color: #166c3c; }
+  .callout.warn   { background: #fff6e8; border: 1px solid #f3dcae; color: #8a5a08; }
+
+  /* ---------- Tables ---------- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 0.92rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  th {
+    background: var(--accent);
+    color: #fff;
+    text-align: left;
+    padding: 11px 16px;
+    font-weight: 700;
+  }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); background: #fff; }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #f6faff; }
+
+  /* ---------- Diagrams ---------- */
+  .diagram {
+    margin: 18px 0;
+    padding: 22px;
+    background: linear-gradient(180deg, #f7fbff, #ffffff);
+    border: 1px dashed #c4d8f5;
+    border-radius: 14px;
+    text-align: center;
+  }
+  .diagram .cap {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top: 10px;
+    font-style: italic;
+  }
+  svg { max-width: 100%; height: auto; }
+
+  /* checklist */
+  .learned {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 8px;
+  }
+  .learned li {
+    background: #ecfaf1;
+    border: 1px solid #c2ebd2;
+    color: #166c3c;
+    padding: 9px 14px;
+    border-radius: 9px;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+  .learned li::before { content: "✔ "; color: var(--green); font-weight: 800; }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 760px) { .two-col { grid-template-columns: 1fr; } }
+
+  footer {
+    margin-top: 60px;
+    padding: 28px;
+    text-align: center;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--border);
+    font-size: 0.88rem;
+  }
+
+  @media (max-width: 920px) {
+    .shell { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="brand"><span class="logo">JS</span> Learn Node.js</div>
+    <div style="font-size:.72rem;color:var(--ink-soft);padding-left:6px;margin-bottom:14px;font-weight:600">Part 1 of 20</div>
+    <a href="index.html" style="color:var(--accent);font-weight:700">← All parts</a>
+
+    <div class="nav-group-title">Set 1 · Basics</div>
+    <a href="#what-is-node">What is Node.js</a>
+    <a href="#setup">Setup &amp; First File</a>
+    <a href="#js-core">JS Core: Vars &amp; Types</a>
+    <a href="#functions">Functions</a>
+
+    <div class="nav-group-title">Set 2 · Control Flow</div>
+    <a href="#if-else">if / else</a>
+    <a href="#loops">Loops</a>
+    <a href="#modules">Modules &amp; require()</a>
+    <a href="#fs">Built-in fs module</a>
+
+    <div class="nav-group-title">Set 3 · Core Concepts</div>
+    <a href="#npm">npm &amp; package.json</a>
+    <a href="#arrow">Arrow Functions</a>
+    <a href="#callbacks">Callbacks</a>
+
+    <div class="nav-group-title">Set 4 · Async &amp; Server</div>
+    <a href="#blocking">Blocking vs Non-blocking</a>
+    <a href="#event-loop">Event Loop</a>
+    <a href="#promises">Promises</a>
+    <a href="#async-await">async / await</a>
+    <a href="#server">First HTTP Server</a>
+
+    <div class="nav-group-title">Set 5 · Express.js</div>
+    <a href="#express">Express Basics</a>
+    <a href="#routes">Routes &amp; Methods</a>
+    <a href="#params">Params &amp; Query</a>
+    <a href="#middleware">Middleware</a>
+
+    <div class="nav-group-title">Reference</div>
+    <a href="#roadmap">Roadmap</a>
+  </aside>
+
+  <!-- ============ CONTENT ============ -->
+  <main class="content">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="eyebrow">Beginner-friendly · Code-first</div>
+      <h1>Node.js — From Absolute Basics to Express APIs</h1>
+      <p>A clear, step-by-step journey through 5 learning sets: run your first script, master core JavaScript, understand async &amp; the event loop, then build real backend APIs with Express.</p>
+      <div class="chips">
+        <span>🌱 Set 1 · Basics</span>
+        <span>📘 Set 2 · Control Flow</span>
+        <span>⚙️ Set 3 · Core Concepts</span>
+        <span>🚀 Set 4 · Async &amp; Servers</span>
+        <span>💥 Set 5 · Express APIs</span>
+      </div>
+    </header>
+
+    <!-- Learning path diagram -->
+    <div class="diagram">
+      <svg viewBox="0 0 920 110" role="img" aria-label="Learning path from Set 1 to Set 5">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#1f6fe0"/><stop offset="1" stop-color="#1657c4"/>
+          </linearGradient>
+          <marker id="arrow" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+          </marker>
+        </defs>
+        <!-- connecting line -->
+        <line x1="90" y1="55" x2="830" y2="55" stroke="#9cc0f2" stroke-width="3" marker-end="url(#arrow)"/>
+        <!-- nodes -->
+        <g font-family="inherit" font-size="13" font-weight="700" text-anchor="middle">
+          <circle cx="90"  cy="55" r="26" fill="url(#g1)"/><text x="90"  y="60" fill="#fff">JS</text>
+          <text x="90"  y="100" fill="#44546a" font-size="11">Basics</text>
+          <circle cx="275" cy="55" r="26" fill="url(#g1)"/><text x="275" y="60" fill="#fff">{ }</text>
+          <text x="275" y="100" fill="#44546a" font-size="11">Control Flow</text>
+          <circle cx="460" cy="55" r="26" fill="url(#g1)"/><text x="460" y="60" fill="#fff">npm</text>
+          <text x="460" y="100" fill="#44546a" font-size="11">Core Concepts</text>
+          <circle cx="645" cy="55" r="26" fill="url(#g1)"/><text x="645" y="60" fill="#fff">⟳</text>
+          <text x="645" y="100" fill="#44546a" font-size="11">Async + Server</text>
+          <circle cx="830" cy="55" r="26" fill="url(#g1)"/><text x="830" y="60" fill="#fff">API</text>
+          <text x="830" y="100" fill="#44546a" font-size="11">Express</text>
+        </g>
+      </svg>
+      <div class="cap">Your roadmap — each set builds on the previous one.</div>
+    </div>
+
+    <!-- ================= SET 1 ================= -->
+    <div class="section-banner" id="set1">
+      <div class="num">1</div>
+      <div>
+        <h2>🌱 Set 1 · JavaScript &amp; Node.js Basics</h2>
+        <p>What Node.js is, setting up, and running your very first program.</p>
+      </div>
+    </div>
+
+    <div class="card" id="what-is-node">
+      <h3><span class="tag">Concept</span> What is Node.js?</h3>
+      <ul>
+        <li><strong>JavaScript</strong> usually runs in the <strong>browser</strong>.</li>
+        <li><strong>Node.js</strong> lets JavaScript run on your <strong>computer / server</strong>.</li>
+        <li>Used for: <strong>Backend APIs</strong>, <strong>web servers</strong>, and <strong>tools &amp; scripts</strong>.</li>
+      </ul>
+      <div class="diagram">
+        <svg viewBox="0 0 640 150" role="img" aria-label="Before and after Node.js">
+          <defs>
+            <marker id="arr2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+            </marker>
+          </defs>
+          <!-- before -->
+          <rect x="20" y="40" width="250" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
+          <text x="145" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">BEFORE NODE.JS</text>
+          <rect x="95" y="62" width="100" height="36" rx="8" fill="#e3edfb"/>
+          <text x="145" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#1657c4">🌐 Browser</text>
+          <text x="145" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS only in browser</text>
+          <!-- arrow -->
+          <line x1="285" y1="80" x2="345" y2="80" stroke="#1657c4" stroke-width="3" marker-end="url(#arr2)"/>
+          <!-- after -->
+          <rect x="360" y="40" width="260" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
+          <text x="490" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">AFTER NODE.JS</text>
+          <rect x="378" y="62" width="76" height="36" rx="8" fill="#e3edfb"/>
+          <text x="416" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">🌐 Browser</text>
+          <rect x="464" y="62" width="76" height="36" rx="8" fill="#d7f0e0"/>
+          <text x="502" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">💻 Server</text>
+          <rect x="550" y="62" width="56" height="36" rx="8" fill="#fbeec9"/>
+          <text x="578" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">🛠 CLI</text>
+          <text x="490" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS runs everywhere</text>
+        </svg>
+        <div class="cap">Node.js takes JavaScript out of the browser and runs it anywhere.</div>
+      </div>
+    </div>
+
+    <div class="card" id="setup">
+      <h3><span class="tag">Setup</span> Install, Project &amp; First File</h3>
+      <p>You need two things installed: <strong>Node.js</strong> and <strong>VS Code</strong>. Verify Node in your terminal:</p>
+      <pre><span class="lang">bash</span><code>node -v</code></pre>
+      <div class="callout note"><span class="ico">📌</span><div>If you see <code class="inline">v18.x.x</code> or <code class="inline">v20.x.x</code>, you're good. Otherwise download the <strong>LTS</strong> version from <a href="https://nodejs.org">nodejs.org</a>.</div></div>
+
+      <h4>Create your first program</h4>
+      <ol>
+        <li>Create a folder named <code class="inline">node-basics</code> and open it in VS Code (<em>File → Open Folder</em>).</li>
+        <li>Inside it, create a file <code class="inline">index.js</code>.</li>
+        <li>Write your first line of code:</li>
+      </ol>
+      <pre><span class="lang">javascript</span><code><span class="t-fn">console</span>.log(<span class="t-str">"Hello, Node.js!"</span>);</code></pre>
+      <p>Open the integrated terminal (<code class="inline">Ctrl + `</code>) and run it:</p>
+      <pre><span class="lang">bash</span><code>node index.js</code></pre>
+      <pre><span class="lang">output</span><code><span class="t-out">Hello, Node.js!</span></code></pre>
+      <div class="callout tip"><span class="ico">🎉</span><div>Congrats — you just ran your first Node.js program!</div></div>
+    </div>
+
+    <div class="card" id="js-core">
+      <h3><span class="tag">Core JS</span> Variables, Data Types &amp; Math</h3>
+      <p>Node.js <em>is</em> JavaScript, so the language basics matter most.</p>
+      <h4>Variables</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> name = <span class="t-str">"Sandya"</span>;
+<span class="t-key">const</span> age = <span class="t-num">25</span>;
+
+<span class="t-fn">console</span>.log(name);
+<span class="t-fn">console</span>.log(age);</code></pre>
+      <div class="two-col">
+        <div class="callout note"><span class="ico">📌</span><div><code class="inline">let</code> → value <strong>can</strong> change.</div></div>
+        <div class="callout note"><span class="ico">📌</span><div><code class="inline">const</code> → value <strong>cannot</strong> change.</div></div>
+      </div>
+
+      <h4>Data Types</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> city = <span class="t-str">"Bangalore"</span>;            <span class="t-com">// String</span>
+<span class="t-key">let</span> year = <span class="t-num">2026</span>;                   <span class="t-com">// Number</span>
+<span class="t-key">let</span> isLearning = <span class="t-key">true</span>;            <span class="t-com">// Boolean</span>
+<span class="t-key">let</span> skills = [<span class="t-str">"JS"</span>, <span class="t-str">"Node"</span>, <span class="t-str">"VS Code"</span>]; <span class="t-com">// Array</span>
+
+<span class="t-fn">console</span>.log(<span class="t-key">typeof</span> city);
+<span class="t-fn">console</span>.log(skills);</code></pre>
+
+      <h4>Simple Math</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> a = <span class="t-num">10</span>;
+<span class="t-key">let</span> b = <span class="t-num">5</span>;
+
+<span class="t-fn">console</span>.log(a + b);  <span class="t-com">// 15</span>
+<span class="t-fn">console</span>.log(a * b);  <span class="t-com">// 50</span></code></pre>
+    </div>
+
+    <div class="card" id="functions">
+      <h3><span class="tag">Core JS</span> Functions</h3>
+      <p>Functions let you <strong>reuse logic</strong> instead of repeating code.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">function</span> <span class="t-fn">greet</span>(name) {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Hello "</span> + name);
+}
+
+<span class="t-fn">greet</span>(<span class="t-str">"Node Learner"</span>);</code></pre>
+
+      <div class="callout tip"><span class="ico">🧠</span><div><strong>Mini practice:</strong> print your name and age, then write a <code class="inline">sayHello()</code> function that prints <em>"Welcome to Node.js"</em> and run it with <code class="inline">node index.js</code>.</div></div>
+
+      <h4>What you learned in Set 1</h4>
+      <ul class="learned">
+        <li>What Node.js is</li><li>Running JS with Node</li><li>VS Code workflow</li>
+        <li>Variables</li><li>Data types</li><li>Functions</li>
+      </ul>
+    </div>
+
+    <!-- ================= SET 2 ================= -->
+    <div class="section-banner" id="set2">
+      <div class="num">2</div>
+      <div>
+        <h2>📘 Set 2 · Control Flow &amp; Node Basics</h2>
+        <p>Decisions, loops, and the real Node feature: modules.</p>
+      </div>
+    </div>
+
+    <div class="card" id="if-else">
+      <h3><span class="tag">Logic</span> if / else — Decision Making</h3>
+      <p>A <strong>conditional statement</strong> lets your program make decisions: <em>if</em> something is true → do this, <em>else</em> → do something else.</p>
+      <div class="callout note"><span class="ico">🌧️</span><div><strong>Real life:</strong> If it is raining → take umbrella. Else → don't take umbrella.</div></div>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> age = <span class="t-num">18</span>;
+
+<span class="t-key">if</span> (age &gt;= <span class="t-num">18</span>) {
+  <span class="t-fn">console</span>.log(<span class="t-str">"You are allowed to vote"</span>);
+} <span class="t-key">else</span> {
+  <span class="t-fn">console</span>.log(<span class="t-str">"You are NOT allowed to vote"</span>);
+}</code></pre>
+      <ul>
+        <li><code class="inline">if</code> → keyword meaning "check a condition".</li>
+        <li><code class="inline">age &gt;= 18</code> → condition (returns <code class="inline">true</code> or <code class="inline">false</code>).</li>
+        <li><code class="inline">{ }</code> → a <strong>block</strong> (group of code).</li>
+        <li><code class="inline">else</code> → runs when the condition is false.</li>
+      </ul>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> isLoggedIn = <span class="t-key">false</span>;
+
+<span class="t-key">if</span> (isLoggedIn) {            <span class="t-com">// same as: if (isLoggedIn === true)</span>
+  <span class="t-fn">console</span>.log(<span class="t-str">"Welcome back!"</span>);
+} <span class="t-key">else</span> {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Please login first"</span>);
+}</code></pre>
+    </div>
+
+    <div class="card" id="loops">
+      <h3><span class="tag">Logic</span> Loops — Repeating Code</h3>
+      <p>A loop repeats code again and again, so you don't write the same lines many times.</p>
+      <div class="two-col">
+        <div>
+          <h4>🔁 for loop (most common)</h4>
+          <pre><span class="lang">javascript</span><code><span class="t-key">for</span> (<span class="t-key">let</span> i = <span class="t-num">1</span>; i &lt;= <span class="t-num">5</span>; i++) {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Number:"</span>, i);
+}</code></pre>
+          <ul>
+            <li><code class="inline">let i = 1</code> → starting point</li>
+            <li><code class="inline">i &lt;= 5</code> → runs while true</li>
+            <li><code class="inline">i++</code> → add 1 each time</li>
+          </ul>
+        </div>
+        <div>
+          <h4>🔁 while loop</h4>
+          <pre><span class="lang">javascript</span><code><span class="t-key">let</span> count = <span class="t-num">1</span>;
+
+<span class="t-key">while</span> (count &lt;= <span class="t-num">3</span>) {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Count is:"</span>, count);
+  count++;
+}</code></pre>
+          <div class="callout warn"><span class="ico">⚠️</span><div>You must manually increase <code class="inline">count</code>, or the loop runs forever!</div></div>
+        </div>
+      </div>
+
+      <h4>Arrays + Loop together (very common)</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">let</span> languages = [<span class="t-str">"JavaScript"</span>, <span class="t-str">"Node.js"</span>, <span class="t-str">"Python"</span>];
+
+<span class="t-key">for</span> (<span class="t-key">let</span> i = <span class="t-num">0</span>; i &lt; languages.length; i++) {
+  <span class="t-fn">console</span>.log(languages[i]);
+}</code></pre>
+      <div class="callout note"><span class="ico">📌</span><div>Arrays start at index <code class="inline">0</code>. <code class="inline">languages.length</code> is the number of items, and <code class="inline">languages[i]</code> accesses an item by index.</div></div>
+    </div>
+
+    <div class="card" id="modules">
+      <h3><span class="tag">Big Concept</span> Modules &amp; require()</h3>
+      <p>A <strong>module</strong> is a reusable piece of code used to organize a project. In Node.js, <strong>every file is a module</strong>. The <code class="inline">require()</code> function <strong>imports</strong> code from another file or module.</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 640 150" role="img" aria-label="module.exports and require flow">
+          <defs>
+            <marker id="arr3" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1f9d57"/>
+            </marker>
+            <marker id="arr3b" markerWidth="10" markerHeight="10" refX="1" refY="3" orient="auto">
+              <path d="M7,0 L0,3 L7,6 Z" fill="#1657c4"/>
+            </marker>
+          </defs>
+          <rect x="30" y="45" width="220" height="70" rx="12" fill="#0b2a52"/>
+          <text x="140" y="72" text-anchor="middle" fill="#9fd0ff" font-size="13" font-weight="700">math.js</text>
+          <text x="140" y="95" text-anchor="middle" fill="#7fe0a8" font-size="12">module.exports = add</text>
+          <rect x="390" y="45" width="220" height="70" rx="12" fill="#0b2a52"/>
+          <text x="500" y="72" text-anchor="middle" fill="#9fd0ff" font-size="13" font-weight="700">index.js</text>
+          <text x="500" y="95" text-anchor="middle" fill="#6db3ff" font-size="12">require("./math")</text>
+          <line x1="255" y1="68" x2="385" y2="68" stroke="#1f9d57" stroke-width="2.5" marker-end="url(#arr3)"/>
+          <text x="320" y="58" text-anchor="middle" font-size="11" fill="#166c3c" font-weight="700">exports</text>
+          <line x1="385" y1="95" x2="255" y2="95" stroke="#1657c4" stroke-width="2.5" marker-end="url(#arr3b)"/>
+          <text x="320" y="112" text-anchor="middle" font-size="11" fill="#1657c4" font-weight="700">imports (require)</text>
+        </svg>
+        <div class="cap">One file exports a function; another imports and uses it.</div>
+      </div>
+
+      <h4>Step 1 — Create <code class="inline">math.js</code></h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">function</span> <span class="t-fn">add</span>(a, b) {
+  <span class="t-key">return</span> a + b;
+}
+
+<span class="t-fn">module</span>.exports = add;   <span class="t-com">// share `add` with other files</span></code></pre>
+
+      <h4>Step 2 — Use it in <code class="inline">index.js</code></h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> add = <span class="t-fn">require</span>(<span class="t-str">"./math"</span>);  <span class="t-com">// ./ = same folder, .js added automatically</span>
+
+<span class="t-key">let</span> result = <span class="t-fn">add</span>(<span class="t-num">5</span>, <span class="t-num">3</span>);
+<span class="t-fn">console</span>.log(result);            <span class="t-com">// 8</span></code></pre>
+    </div>
+
+    <div class="card" id="fs">
+      <h3><span class="tag">Built-in</span> The fs (File System) Module</h3>
+      <p><code class="inline">fs</code> is a <strong>built-in</strong> Node module for working with files — no <code class="inline">./</code> needed when importing.</p>
+      <p>Create <code class="inline">data.txt</code> containing <em>"Hello from file"</em>, then in <code class="inline">index.js</code>:</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> fs = <span class="t-fn">require</span>(<span class="t-str">"fs"</span>);
+
+<span class="t-key">const</span> content = fs.<span class="t-fn">readFileSync</span>(<span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>);
+<span class="t-fn">console</span>.log(content);</code></pre>
+      <ul>
+        <li><code class="inline">readFileSync</code> → reads the file <strong>synchronously</strong>.</li>
+        <li><code class="inline">"utf-8"</code> → encoding (returns readable text).</li>
+      </ul>
+      <h4>What you learned in Set 2</h4>
+      <ul class="learned">
+        <li>if / else conditions</li><li>for &amp; while loops</li><li>Arrays with loops</li>
+        <li>What a module is</li><li>require &amp; module.exports</li><li>Built-in fs module</li>
+      </ul>
+    </div>
+
+    <!-- ================= SET 3 ================= -->
+    <div class="section-banner" id="set3">
+      <div class="num">3</div>
+      <div>
+        <h2>⚙️ Set 3 · Node.js Core Concepts</h2>
+        <p>npm, package.json, arrow functions, and the all-important callback.</p>
+      </div>
+    </div>
+
+    <div class="card" id="npm">
+      <h3><span class="tag">Tooling</span> npm &amp; package.json</h3>
+      <p><strong>npm</strong> (Node Package Manager) ships <em>with</em> Node.js and downloads/manages libraries written by others.</p>
+      <div class="callout note"><span class="ico">📌</span><div>Think of npm like a <strong>Play Store for Node.js code</strong>.</div></div>
+      <pre><span class="lang">bash</span><code>npm -v          <span class="t-com"># check npm version</span>
+npm init -y     <span class="t-com"># create package.json</span></code></pre>
+      <p>The <code class="inline">package.json</code> is a configuration file describing your project — every real Node project has one.</p>
+      <pre><span class="lang">json</span><code>{
+  <span class="t-str">"name"</span>: <span class="t-str">"node-basics"</span>,
+  <span class="t-str">"version"</span>: <span class="t-str">"1.0.0"</span>,
+  <span class="t-str">"main"</span>: <span class="t-str">"index.js"</span>,
+  <span class="t-str">"scripts"</span>: {},
+  <span class="t-str">"dependencies"</span>: {}
+}</code></pre>
+      <table>
+        <tr><th>Field</th><th>Meaning</th></tr>
+        <tr><td><code class="inline">name</code></td><td>Project name</td></tr>
+        <tr><td><code class="inline">version</code></td><td>Project version</td></tr>
+        <tr><td><code class="inline">main</code></td><td>Entry file</td></tr>
+        <tr><td><code class="inline">dependencies</code></td><td>External libraries you install</td></tr>
+      </table>
+
+      <h4>Installing a package (example: chalk)</h4>
+      <pre><span class="lang">bash</span><code>npm install chalk</code></pre>
+      <p>This creates a <code class="inline">node_modules/</code> folder and a <code class="inline">package-lock.json</code>.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> chalk = <span class="t-fn">require</span>(<span class="t-str">"chalk"</span>);
+
+<span class="t-fn">console</span>.log(chalk.<span class="t-fn">green</span>(<span class="t-str">"Success message"</span>));
+<span class="t-fn">console</span>.log(chalk.<span class="t-fn">red</span>(<span class="t-str">"Error message"</span>));</code></pre>
+      <div class="callout warn"><span class="ico">⚠️</span><div>Never delete <code class="inline">package.json</code> — it defines your whole project.</div></div>
+    </div>
+
+    <div class="card" id="arrow">
+      <h3><span class="tag">Modern JS</span> Arrow Functions</h3>
+      <p>A shorter, cleaner way to write functions — used heavily in Node.js &amp; React.</p>
+      <div class="two-col">
+        <div>
+          <h4>Normal function</h4>
+          <pre><span class="lang">javascript</span><code><span class="t-key">function</span> <span class="t-fn">add</span>(a, b) {
+  <span class="t-key">return</span> a + b;
+}</code></pre>
+        </div>
+        <div>
+          <h4>Arrow function</h4>
+          <pre><span class="lang">javascript</span><code><span class="t-key">const</span> add = (a, b) =&gt; {
+  <span class="t-key">return</span> a + b;
+};
+
+<span class="t-com">// even shorter:</span>
+<span class="t-key">const</span> add = (a, b) =&gt; a + b;</code></pre>
+        </div>
+      </div>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> greet = name =&gt; {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Hello "</span> + name);
+};
+
+<span class="t-fn">greet</span>(<span class="t-str">"Sandya"</span>);</code></pre>
+    </div>
+
+    <div class="card" id="callbacks">
+      <h3><span class="tag">Important</span> Callbacks</h3>
+      <p>A <strong>callback</strong> is a function passed <em>inside</em> another function that runs <strong>later</strong> — used when reading files, fetching data, or waiting for something.</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 640 130" role="img" aria-label="Callback execution order">
+          <defs>
+            <marker id="arr4" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+            </marker>
+          </defs>
+          <rect x="20"  y="45" width="160" height="50" rx="10" fill="#e3edfb" stroke="#c4d8f5"/>
+          <text x="100" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">greet("Node", cb)</text>
+          <text x="100" y="84" text-anchor="middle" font-size="11" fill="#44546a">function is called</text>
+          <line x1="185" y1="70" x2="225" y2="70" stroke="#1657c4" stroke-width="2.5" marker-end="url(#arr4)"/>
+          <rect x="230" y="45" width="160" height="50" rx="10" fill="#fff" stroke="#c4d8f5"/>
+          <text x="310" y="74" text-anchor="middle" font-size="12" font-weight="700" fill="#16202e">do main work</text>
+          <line x1="395" y1="70" x2="435" y2="70" stroke="#1657c4" stroke-width="2.5" marker-end="url(#arr4)"/>
+          <rect x="440" y="45" width="180" height="50" rx="10" fill="#d7f0e0" stroke="#c2ebd2"/>
+          <text x="530" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">callback() runs</text>
+          <text x="530" y="84" text-anchor="middle" font-size="11" fill="#166c3c">…later, when ready</text>
+        </svg>
+        <div class="cap">The callback is handed in early but only executes once the work is done.</div>
+      </div>
+
+      <pre><span class="lang">javascript</span><code><span class="t-key">function</span> <span class="t-fn">greet</span>(name, callback) {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Hello "</span> + name);
+  <span class="t-fn">callback</span>();              <span class="t-com">// executes later</span>
+}
+
+<span class="t-fn">greet</span>(<span class="t-str">"Node"</span>, <span class="t-key">function</span> () {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Callback executed"</span>);
+});</code></pre>
+
+      <h4>Callbacks in real Node — fs.readFile (async)</h4>
+      <p>Node.js is <strong>non-blocking</strong>: it doesn't wait, it keeps working.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> fs = <span class="t-fn">require</span>(<span class="t-str">"fs"</span>);
+
+fs.<span class="t-fn">readFile</span>(<span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>, (error, data) =&gt; {
+  <span class="t-key">if</span> (error) {
+    <span class="t-fn">console</span>.log(<span class="t-str">"Error reading file"</span>);
+    <span class="t-key">return</span>;
+  }
+  <span class="t-fn">console</span>.log(data);
+});</code></pre>
+
+      <div class="callout note"><span class="ico">🧩</span><div><strong>Error-first callback pattern:</strong> Node callbacks follow <code class="inline">(error, result)</code> — always check the error first. This pattern is <em>everywhere</em> in Node.js.</div></div>
+
+      <h4>What you learned in Set 3</h4>
+      <ul class="learned">
+        <li>What npm is</li><li>package.json</li><li>Installing packages</li>
+        <li>Arrow functions</li><li>Callbacks</li><li>Async file reading</li>
+      </ul>
+    </div>
+
+    <!-- ================= SET 4 ================= -->
+    <div class="section-banner" id="set4">
+      <div class="num">4</div>
+      <div>
+        <h2>🚀 Set 4 · Async Concepts + Your First Server</h2>
+        <p>Where Node.js becomes powerful — async control and real backend code.</p>
+      </div>
+    </div>
+
+    <div class="card" id="blocking">
+      <h3><span class="tag">Async</span> Blocking vs Non-blocking</h3>
+      <div class="two-col">
+        <div>
+          <h4>🛑 Blocking</h4>
+          <p>Code that stops everything until it finishes.</p>
+          <pre><span class="lang">javascript</span><code><span class="t-key">const</span> data = fs.<span class="t-fn">readFileSync</span>(
+  <span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>);
+<span class="t-fn">console</span>.log(data);
+<span class="t-fn">console</span>.log(<span class="t-str">"Done"</span>);</code></pre>
+          <pre><span class="lang">output</span><code><span class="t-out">(file content)
+Done</span></code></pre>
+          <p class="lead">It waits → then prints "Done".</p>
+        </div>
+        <div>
+          <h4>✅ Non-blocking</h4>
+          <p>Code that does not wait — it moves on.</p>
+          <pre><span class="lang">javascript</span><code>fs.<span class="t-fn">readFile</span>(<span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>,
+  (err, data) =&gt; {
+    <span class="t-fn">console</span>.log(data);
+  });
+<span class="t-fn">console</span>.log(<span class="t-str">"Done"</span>);</code></pre>
+          <pre><span class="lang">output</span><code><span class="t-out">Done
+(file content)</span></code></pre>
+          <p class="lead">It doesn't wait → runs the callback later.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="event-loop">
+      <h3><span class="tag">Core Idea</span> The Event Loop</h3>
+      <p>Node.js uses an <strong>Event Loop</strong> to manage callbacks, async tasks, and execution order. The simple mental model: <strong>run normal code first, then run async callbacks.</strong></p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 660 260" role="img" aria-label="Event loop diagram">
+          <defs>
+            <marker id="loopArr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+            </marker>
+          </defs>
+          <!-- call stack -->
+          <rect x="30" y="40" width="170" height="180" rx="14" fill="#fff" stroke="#d6e3f5"/>
+          <text x="115" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">CALL STACK</text>
+          <rect x="50" y="150" width="130" height="30" rx="6" fill="#e3edfb"/><text x="115" y="170" text-anchor="middle" font-size="11" fill="#1657c4">run code now</text>
+          <rect x="50" y="115" width="130" height="30" rx="6" fill="#e3edfb"/><text x="115" y="135" text-anchor="middle" font-size="11" fill="#1657c4">function()</text>
+          <!-- node apis -->
+          <rect x="250" y="40" width="170" height="80" rx="14" fill="#fff" stroke="#d6e3f5"/>
+          <text x="335" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">NODE APIs</text>
+          <text x="335" y="78" text-anchor="middle" font-size="11" fill="#16202e">fs, timers, http…</text>
+          <text x="335" y="96" text-anchor="middle" font-size="11" fill="#16202e">(async work)</text>
+          <!-- callback queue -->
+          <rect x="250" y="160" width="170" height="60" rx="14" fill="#fff" stroke="#d6e3f5"/>
+          <text x="335" y="152" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">CALLBACK QUEUE</text>
+          <rect x="270" y="178" width="130" height="26" rx="6" fill="#d7f0e0"/><text x="335" y="196" text-anchor="middle" font-size="11" fill="#166c3c">done callbacks</text>
+          <!-- event loop -->
+          <circle cx="560" cy="130" r="62" fill="none" stroke="#1f6fe0" stroke-width="3" stroke-dasharray="6 6"/>
+          <text x="560" y="125" text-anchor="middle" font-size="13" font-weight="800" fill="#1657c4">EVENT</text>
+          <text x="560" y="143" text-anchor="middle" font-size="13" font-weight="800" fill="#1657c4">LOOP</text>
+          <!-- arrows -->
+          <line x1="205" y1="80" x2="245" y2="80" stroke="#1657c4" stroke-width="2.5" marker-end="url(#loopArr)"/>
+          <line x1="335" y1="125" x2="335" y2="155" stroke="#1657c4" stroke-width="2.5" marker-end="url(#loopArr)"/>
+          <line x1="425" y1="190" x2="498" y2="150" stroke="#1657c4" stroke-width="2.5" marker-end="url(#loopArr)"/>
+          <line x1="498" y1="110" x2="195" y2="115" stroke="#1657c4" stroke-width="2.5" marker-end="url(#loopArr)"/>
+        </svg>
+        <div class="cap">Async tasks go to Node APIs; when finished, their callbacks queue up and the event loop pushes them back onto the stack.</div>
+      </div>
+      <div class="callout tip"><span class="ico">🧠</span><div>You don't need deep theory yet — just remember: <strong>Node handles many tasks without waiting.</strong></div></div>
+    </div>
+
+    <div class="card" id="promises">
+      <h3><span class="tag">Async</span> Promises — Better than Callbacks</h3>
+      <p>A <strong>Promise</strong> represents a task that will finish in the future. It has three states:</p>
+      <div class="diagram">
+        <svg viewBox="0 0 600 120" role="img" aria-label="Promise states">
+          <defs>
+            <marker id="pArr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#44546a"/>
+            </marker>
+          </defs>
+          <rect x="30" y="40" width="150" height="46" rx="10" fill="#fff6e8" stroke="#f3dcae"/>
+          <text x="105" y="68" text-anchor="middle" font-size="13" font-weight="700" fill="#8a5a08">⏳ Pending</text>
+          <line x1="185" y1="50" x2="240" y2="35" stroke="#44546a" stroke-width="2" marker-end="url(#pArr)"/>
+          <line x1="185" y1="76" x2="240" y2="92" stroke="#44546a" stroke-width="2" marker-end="url(#pArr)"/>
+          <rect x="245" y="14" width="170" height="42" rx="10" fill="#d7f0e0" stroke="#c2ebd2"/>
+          <text x="330" y="40" text-anchor="middle" font-size="13" font-weight="700" fill="#166c3c">✅ Resolved (success)</text>
+          <rect x="245" y="72" width="170" height="42" rx="10" fill="#fbe1e5" stroke="#f3c2cb"/>
+          <text x="330" y="98" text-anchor="middle" font-size="13" font-weight="700" fill="#a62f43">❌ Rejected (error)</text>
+        </svg>
+        <div class="cap">A promise starts pending, then settles as either resolved or rejected.</div>
+      </div>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> myPromise = <span class="t-key">new</span> <span class="t-fn">Promise</span>((resolve, reject) =&gt; {
+  <span class="t-key">let</span> success = <span class="t-key">true</span>;
+
+  <span class="t-key">if</span> (success) {
+    <span class="t-fn">resolve</span>(<span class="t-str">"Task completed"</span>);   <span class="t-com">// success</span>
+  } <span class="t-key">else</span> {
+    <span class="t-fn">reject</span>(<span class="t-str">"Task failed"</span>);       <span class="t-com">// failure</span>
+  }
+});
+
+myPromise
+  .<span class="t-fn">then</span>(result =&gt; <span class="t-fn">console</span>.log(result))   <span class="t-com">// runs on success</span>
+  .<span class="t-fn">catch</span>(error =&gt; <span class="t-fn">console</span>.log(error));   <span class="t-com">// runs on error</span></code></pre>
+
+      <h4>Promise-based file read</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> fs = <span class="t-fn">require</span>(<span class="t-str">"fs"</span>).promises;
+
+fs.<span class="t-fn">readFile</span>(<span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>)
+  .<span class="t-fn">then</span>(data =&gt; <span class="t-fn">console</span>.log(data))
+  .<span class="t-fn">catch</span>(err =&gt; <span class="t-fn">console</span>.log(err));</code></pre>
+    </div>
+
+    <div class="card" id="async-await">
+      <h3><span class="tag">Modern</span> async / await</h3>
+      <p>The cleanest way to write async code — it reads like normal code but stays asynchronous.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> fs = <span class="t-fn">require</span>(<span class="t-str">"fs"</span>).promises;
+
+<span class="t-key">async</span> <span class="t-key">function</span> <span class="t-fn">readFileData</span>() {
+  <span class="t-key">try</span> {
+    <span class="t-key">const</span> data = <span class="t-key">await</span> fs.<span class="t-fn">readFile</span>(<span class="t-str">"data.txt"</span>, <span class="t-str">"utf-8"</span>);
+    <span class="t-fn">console</span>.log(data);
+  } <span class="t-key">catch</span> (error) {
+    <span class="t-fn">console</span>.log(<span class="t-str">"Error:"</span>, error);
+  }
+}
+
+<span class="t-fn">readFileData</span>();</code></pre>
+      <ul>
+        <li><code class="inline">async</code> → marks the function as asynchronous.</li>
+        <li><code class="inline">await</code> → waits for the promise result.</li>
+        <li><code class="inline">try / catch</code> → handles errors.</li>
+      </ul>
+    </div>
+
+    <div class="card" id="server">
+      <h3><span class="tag">Backend</span> Your First HTTP Server 🚀</h3>
+      <p>Use the built-in <code class="inline">http</code> module to create a web server.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> http = <span class="t-fn">require</span>(<span class="t-str">"http"</span>);
+
+<span class="t-key">const</span> server = http.<span class="t-fn">createServer</span>((req, res) =&gt; {
+  res.<span class="t-fn">write</span>(<span class="t-str">"Hello from Node server!"</span>);
+  res.<span class="t-fn">end</span>();
+});
+
+server.<span class="t-fn">listen</span>(<span class="t-num">3000</span>, () =&gt; {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Server running on port 3000"</span>);
+});</code></pre>
+      <ul>
+        <li><code class="inline">createServer()</code> → creates a web server.</li>
+        <li><code class="inline">req</code> → the request from the client.</li>
+        <li><code class="inline">res</code> → the response we send back.</li>
+      </ul>
+      <p>Run <code class="inline">node index.js</code> and open <code class="inline">http://localhost:3000</code> 🎉</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 600 110" role="img" aria-label="Request response cycle">
+          <defs>
+            <marker id="rArr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+            </marker>
+            <marker id="rArrG" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1f9d57"/>
+            </marker>
+          </defs>
+          <rect x="30" y="35" width="150" height="50" rx="12" fill="#e3edfb" stroke="#c4d8f5"/>
+          <text x="105" y="65" text-anchor="middle" font-size="13" font-weight="700" fill="#1657c4">🌐 Client</text>
+          <rect x="420" y="35" width="150" height="50" rx="12" fill="#d7f0e0" stroke="#c2ebd2"/>
+          <text x="495" y="65" text-anchor="middle" font-size="13" font-weight="700" fill="#166c3c">💻 Node Server</text>
+          <line x1="185" y1="50" x2="415" y2="50" stroke="#1657c4" stroke-width="2.5" marker-end="url(#rArr)"/>
+          <text x="300" y="42" text-anchor="middle" font-size="11" fill="#1657c4" font-weight="700">request (req)</text>
+          <line x1="415" y1="72" x2="185" y2="72" stroke="#1f9d57" stroke-width="2.5" marker-end="url(#rArrG)"/>
+          <text x="300" y="90" text-anchor="middle" font-size="11" fill="#166c3c" font-weight="700">response (res)</text>
+        </svg>
+        <div class="cap">Every web interaction is a request in, a response out.</div>
+      </div>
+
+      <h4>Handling different routes</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> server = http.<span class="t-fn">createServer</span>((req, res) =&gt; {
+  <span class="t-key">if</span> (req.url === <span class="t-str">"/"</span>) {
+    res.<span class="t-fn">write</span>(<span class="t-str">"Home Page"</span>);
+  } <span class="t-key">else if</span> (req.url === <span class="t-str">"/about"</span>) {
+    res.<span class="t-fn">write</span>(<span class="t-str">"About Page"</span>);
+  } <span class="t-key">else</span> {
+    res.<span class="t-fn">write</span>(<span class="t-str">"404 Not Found"</span>);
+  }
+  res.<span class="t-fn">end</span>();
+});
+
+server.<span class="t-fn">listen</span>(<span class="t-num">3000</span>);</code></pre>
+      <h4>What you learned in Set 4</h4>
+      <ul class="learned">
+        <li>Blocking vs non-blocking</li><li>Event loop basics</li><li>Promises</li>
+        <li>async / await</li><li>Creating a server</li><li>Routing</li>
+      </ul>
+    </div>
+
+    <!-- ================= SET 5 ================= -->
+    <div class="section-banner" id="set5">
+      <div class="num">5</div>
+      <div>
+        <h2>💥 Set 5 · Express.js — Real Backend APIs</h2>
+        <p>The industry-standard framework that makes servers and routing easy.</p>
+      </div>
+    </div>
+
+    <div class="card" id="express">
+      <h3><span class="tag">Framework</span> What is Express.js?</h3>
+      <p><strong>Express.js</strong> is a lightweight framework for building Node servers and APIs easily.</p>
+      <div class="callout note"><span class="ico">🚗</span><div><strong>Analogy:</strong> Node is the <strong>engine</strong>; Express is the easy <strong>steering wheel</strong>.</div></div>
+      <pre><span class="lang">bash</span><code>npm install express</code></pre>
+      <h4>Your first Express server</h4>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> express = <span class="t-fn">require</span>(<span class="t-str">"express"</span>);
+<span class="t-key">const</span> app = <span class="t-fn">express</span>();
+
+app.<span class="t-fn">listen</span>(<span class="t-num">3000</span>, () =&gt; {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Server running on port 3000"</span>);
+});</code></pre>
+    </div>
+
+    <div class="card" id="routes">
+      <h3><span class="tag">Routing</span> Routes &amp; HTTP Methods</h3>
+      <p>A <strong>route</strong> is a URL path + a function that runs when accessed.</p>
+      <pre><span class="lang">javascript</span><code><span class="t-key">const</span> express = <span class="t-fn">require</span>(<span class="t-str">"express"</span>);
+<span class="t-key">const</span> app = <span class="t-fn">express</span>();
+
+app.<span class="t-fn">get</span>(<span class="t-str">"/"</span>, (req, res) =&gt; {
+  res.<span class="t-fn">send</span>(<span class="t-str">"Home Page"</span>);
+});
+
+app.<span class="t-fn">get</span>(<span class="t-str">"/about"</span>, (req, res) =&gt; {
+  res.<span class="t-fn">send</span>(<span class="t-str">"About Page"</span>);
+});
+
+app.<span class="t-fn">listen</span>(<span class="t-num">3000</span>);</code></pre>
+
+      <h4>HTTP methods</h4>
+      <table>
+        <tr><th>Method</th><th>Meaning</th></tr>
+        <tr><td><code class="inline">GET</code></td><td>Get data</td></tr>
+        <tr><td><code class="inline">POST</code></td><td>Send data</td></tr>
+        <tr><td><code class="inline">PUT</code></td><td>Update</td></tr>
+        <tr><td><code class="inline">DELETE</code></td><td>Delete</td></tr>
+      </table>
+      <div class="two-col">
+        <div>
+          <pre><span class="lang">javascript</span><code>app.<span class="t-fn">get</span>(<span class="t-str">"/user"</span>, (req, res) =&gt; {
+  res.<span class="t-fn">send</span>(<span class="t-str">"User data"</span>);
+});</code></pre>
+        </div>
+        <div>
+          <pre><span class="lang">javascript</span><code>app.<span class="t-fn">post</span>(<span class="t-str">"/user"</span>, (req, res) =&gt; {
+  res.<span class="t-fn">send</span>(<span class="t-str">"User created"</span>);
+});</code></pre>
+        </div>
+      </div>
+      <div class="callout note"><span class="ico">📌</span><div>You won't see <code class="inline">POST</code> in a browser — use a tool like <strong>Postman</strong> to test it.</div></div>
+
+      <h4>Sending JSON (a real API)</h4>
+      <pre><span class="lang">javascript</span><code>app.<span class="t-fn">get</span>(<span class="t-str">"/api"</span>, (req, res) =&gt; {
+  res.<span class="t-fn">json</span>({
+    name: <span class="t-str">"Sandya"</span>,
+    role: <span class="t-str">"Node learner"</span>
+  });
+});</code></pre>
+    </div>
+
+    <div class="card" id="params">
+      <h3><span class="tag">Routing</span> Route Params &amp; Query Strings</h3>
+      <div class="two-col">
+        <div>
+          <h4>Route parameters</h4>
+          <pre><span class="lang">javascript</span><code>app.<span class="t-fn">get</span>(<span class="t-str">"/user/:id"</span>, (req, res) =&gt; {
+  <span class="t-key">const</span> userId = req.params.id;
+  res.<span class="t-fn">send</span>(<span class="t-str">"User ID is "</span> + userId);
+});</code></pre>
+          <p class="lead"><code class="inline">/user/101</code> → "User ID is 101"</p>
+        </div>
+        <div>
+          <h4>Query parameters</h4>
+          <pre><span class="lang">javascript</span><code>app.<span class="t-fn">get</span>(<span class="t-str">"/search"</span>, (req, res) =&gt; {
+  <span class="t-key">const</span> name = req.query.name;
+  res.<span class="t-fn">send</span>(<span class="t-str">"Searching for "</span> + name);
+});</code></pre>
+          <p class="lead"><code class="inline">/search?name=node</code> → "Searching for node"</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="middleware">
+      <h3><span class="tag">Core Concept</span> Middleware &amp; JSON Input</h3>
+      <p>A <strong>middleware</strong> is a function that runs <em>before</em> the request reaches your route.</p>
+
+      <div class="diagram">
+        <svg viewBox="0 0 620 110" role="img" aria-label="Middleware pipeline">
+          <defs>
+            <marker id="mArr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+            </marker>
+          </defs>
+          <rect x="15"  y="38" width="120" height="46" rx="10" fill="#e3edfb" stroke="#c4d8f5"/>
+          <text x="75"  y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">Request</text>
+          <rect x="175" y="38" width="140" height="46" rx="10" fill="#fff6e8" stroke="#f3dcae"/>
+          <text x="245" y="60" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">Middleware</text>
+          <text x="245" y="76" text-anchor="middle" font-size="10" fill="#8a5a08">next()</text>
+          <rect x="355" y="38" width="120" height="46" rx="10" fill="#e3edfb" stroke="#c4d8f5"/>
+          <text x="415" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">Route</text>
+          <rect x="515" y="38" width="90" height="46" rx="10" fill="#d7f0e0" stroke="#c2ebd2"/>
+          <text x="560" y="66" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">Response</text>
+          <line x1="138" y1="61" x2="172" y2="61" stroke="#1657c4" stroke-width="2.5" marker-end="url(#mArr)"/>
+          <line x1="318" y1="61" x2="352" y2="61" stroke="#1657c4" stroke-width="2.5" marker-end="url(#mArr)"/>
+          <line x1="478" y1="61" x2="512" y2="61" stroke="#1657c4" stroke-width="2.5" marker-end="url(#mArr)"/>
+        </svg>
+        <div class="cap">Middleware sits in the pipeline; <code class="inline">next()</code> passes control onward.</div>
+      </div>
+
+      <pre><span class="lang">javascript</span><code>app.<span class="t-fn">use</span>((req, res, next) =&gt; {
+  <span class="t-fn">console</span>.log(<span class="t-str">"Request received"</span>);
+  <span class="t-fn">next</span>();   <span class="t-com">// pass control to the next function</span>
+});</code></pre>
+
+      <h4>Handling JSON input (POST data)</h4>
+      <pre><span class="lang">javascript</span><code>app.<span class="t-fn">use</span>(express.<span class="t-fn">json</span>());   <span class="t-com">// parse JSON bodies</span>
+
+app.<span class="t-fn">post</span>(<span class="t-str">"/user"</span>, (req, res) =&gt; {
+  <span class="t-key">const</span> data = req.body;
+  res.<span class="t-fn">json</span>({
+    message: <span class="t-str">"User received"</span>,
+    data: data
+  });
+});</code></pre>
+
+      <h4>What you learned in Set 5</h4>
+      <ul class="learned">
+        <li>What Express.js is</li><li>Creating servers easily</li><li>Routing</li>
+        <li>GET &amp; POST</li><li>JSON responses</li><li>Params &amp; queries</li><li>Middleware</li>
+      </ul>
+    </div>
+
+    <!-- ROADMAP -->
+    <div class="section-banner" id="roadmap">
+      <div class="num">★</div>
+      <div>
+        <h2>What's Next</h2>
+        <p>You can now run Node, work with async code, and build real backend APIs.</p>
+      </div>
+    </div>
+    <div class="card">
+      <h3><span class="tag">Roadmap</span> Continue to Developer Level</h3>
+      <p>The natural next step is <strong>REST API + a real project</strong>:</p>
+      <ul>
+        <li>Build a full <strong>CRUD API</strong> (Create, Read, Update, Delete)</li>
+        <li>A real project — e.g. a <strong>user management system</strong></li>
+        <li>Proper <strong>folder structure</strong> (important for jobs)</li>
+      </ul>
+      <div class="callout tip"><span class="ico">💪</span><div>You're now entering real developer level — keep building and practicing!</div></div>
+    </div>
+
+    <div class="pager" style="display:flex;justify-content:space-between;gap:14px;margin-top:40px">
+      <a class="prev disabled" style="flex:1;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow);opacity:.4;pointer-events:none">
+        <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700">← Previous</span>
+        <span style="display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem">Start of series</span>
+      </a>
+      <a class="next" href="part-02.html" style="flex:1;text-align:right;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow)">
+        <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700">Next →</span>
+        <span style="display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem">Part 2: REST APIs &amp; CRUD</span>
+      </a>
+    </div>
+
+    <footer>
+      Learn Node.js · Part 1 of 20 · Built with a light soft-UI docs theme.
+    </footer>
+
+  </main>
+</div>
+</body>
+</html>
