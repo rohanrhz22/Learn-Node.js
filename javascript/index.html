@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Learn JavaScript — 20-Part Series</title>
+<style>
+:root{
+  --page-bg:#eaf2fc;--card-bg:#ffffff;--accent:#1657c4;--accent-bright:#1f6fe0;
+  --accent-soft:#e3edfb;--ink:#16202e;--ink-soft:#44546a;--code-bg:#0b2a52;
+  --code-ink:#d6e4ff;--border:#d6e3f5;--green:#1f9d57;--red:#d6455a;--amber:#c98a12;
+  --shadow:0 8px 24px rgba(22,87,196,.08);--shadow-lg:0 16px 44px rgba(22,87,196,.14);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--page-bg);color:var(--ink);line-height:1.65;font-size:16px}
+.shell{display:grid;grid-template-columns:270px 1fr;max-width:1280px;margin:0 auto}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:24px 16px 40px;border-right:1px solid var(--border)}
+.sidebar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.02rem;color:var(--accent);margin-bottom:8px;padding-left:6px}
+.sidebar .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;font-size:.9rem;box-shadow:var(--shadow)}
+.sidebar .partlabel{font-size:.72rem;color:var(--ink-soft);padding-left:6px;margin-bottom:18px;font-weight:600}
+.nav-group-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:16px 0 6px 6px;font-weight:700}
+.sidebar a{display:block;text-decoration:none;color:var(--ink-soft);padding:7px 12px;border-radius:8px;font-size:.9rem;transition:all .15s}
+.sidebar a:hover{background:var(--accent-soft);color:var(--accent)}
+.sidebar a.home{color:var(--accent);font-weight:700}
+.content{padding:0 clamp(20px,4vw,56px) 80px;min-width:0}
+.hero{margin:28px 0 30px;padding:44px 42px;border-radius:22px;background:linear-gradient(135deg,#1f6fe0 0%,#1657c4 55%,#0e3f93 100%);color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);border-radius:50%}
+.hero .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;font-weight:700;opacity:.9}
+.hero h1{margin:12px 0 14px;font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.15;font-weight:800}
+.hero p{margin:0;max-width:640px;font-size:1.04rem;opacity:.95}
+.hero .chips{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px}
+.hero .chips span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600}
+.crumbs{display:flex;gap:8px;align-items:center;font-size:.85rem;margin:24px 0 0;color:var(--ink-soft)}
+.crumbs a{color:var(--accent);text-decoration:none}
+.section-banner{margin:48px 0 22px;padding:22px 26px;border-radius:16px;background:linear-gradient(120deg,var(--accent-soft),#f3f8ff);border:1px solid var(--border);border-left:5px solid var(--accent-bright);display:flex;align-items:center;gap:16px}
+.section-banner .num{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.15rem;box-shadow:var(--shadow)}
+.section-banner h2{margin:0;font-size:1.45rem;color:var(--accent);font-weight:800}
+.section-banner p{margin:4px 0 0;color:var(--ink-soft);font-size:.92rem}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:18px 0;box-shadow:var(--shadow)}
+.card h3{margin:0 0 12px;font-size:1.16rem;color:var(--ink);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card h3 .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:6px}
+.card h4{margin:20px 0 8px;font-size:1.0rem;color:var(--accent)}
+.card p{margin:8px 0}.card ul,.card ol{margin:8px 0;padding-left:22px}.card li{margin:5px 0}
+.lead{color:var(--ink-soft)}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:18px 20px;overflow-x:auto;font-size:.88rem;line-height:1.6;margin:14px 0;border:1px solid #123a6b;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 18px rgba(11,42,82,.25);position:relative}
+pre code{font-family:"SF Mono","Fira Code","Cascadia Code",Consolas,monospace;white-space:pre}
+pre .lang{position:absolute;top:0;right:0;background:#123a6b;color:#8fb6f0;font-size:.66rem;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:0 12px 0 10px;text-transform:uppercase}
+.t-key{color:#6db3ff}.t-str{color:#7fe0a8}.t-num{color:#f3b05a}.t-com{color:#6b86ad;font-style:italic}.t-fn{color:#c79bff}.t-out{color:#9fd0ff}
+code.inline{background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:6px;font-family:"SF Mono",Consolas,monospace;font-size:.86em;font-weight:600}
+.callout{border-radius:12px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;font-size:.94rem}
+.callout .ico{flex:0 0 auto;font-size:1.15rem;line-height:1.5}
+.callout.note{background:#eef5ff;border:1px solid #cfe0fb;color:#214a87}
+.callout.tip{background:#ecfaf1;border:1px solid #c2ebd2;color:#166c3c}
+.callout.warn{background:#fff6e8;border:1px solid #f3dcae;color:#8a5a08}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.92rem;border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+th{background:var(--accent);color:#fff;text-align:left;padding:11px 16px;font-weight:700}
+td{padding:10px 16px;border-bottom:1px solid var(--border);background:#fff}
+tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f6faff}
+.diagram{margin:18px 0;padding:22px;background:linear-gradient(180deg,#f7fbff,#fff);border:1px dashed #c4d8f5;border-radius:14px;text-align:center}
+.diagram .cap{font-size:.82rem;color:var(--ink-soft);margin-top:10px;font-style:italic}
+svg{max-width:100%;height:auto}
+.learned{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.learned li{background:#ecfaf1;border:1px solid #c2ebd2;color:#166c3c;padding:9px 14px;border-radius:9px;font-size:.88rem;font-weight:600}
+.learned li::before{content:"\2714  ";color:var(--green);font-weight:800}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:40px}
+.pager a{flex:1;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow);transition:all .15s}
+.pager a:hover{border-color:var(--accent-bright);transform:translateY(-2px)}
+.pager .dir{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700}
+.pager .ttl{display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+footer{margin-top:50px;padding:28px;text-align:center;color:var(--ink-soft);border-top:1px solid var(--border);font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:8px}
+.pcard{display:block;text-decoration:none;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);transition:all .18s;position:relative;overflow:hidden}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--accent-bright)}
+.pcard .pn{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.05rem;box-shadow:var(--shadow);margin-bottom:12px}
+.pcard h3{margin:0 0 6px;color:var(--ink);font-size:1.05rem}
+.pcard p{margin:0;color:var(--ink-soft);font-size:.88rem}
+.pcard .lvl{display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:6px}
+.lvl.beg{background:#ecfaf1;color:#166c3c}.lvl.int{background:#eef5ff;color:#214a87}.lvl.adv{background:#fdeef0;color:#a62f43}
+@media(max-width:920px){.shell{grid-template-columns:1fr}.sidebar{display:none}}
+</style></head><body>
+<div class="shell" style="grid-template-columns:1fr"><main class="content">
+<div class="crumbs"><span>Learn JavaScript · Full Series</span></div>
+<header class="hero"><div class="eyebrow">A complete 20-part path</div>
+<h1>Learn JavaScript — From Variables to the Modern Web</h1>
+<p>Twenty code-first parts in ascending difficulty: start with your first variable and finish writing async, modular, well-patterned JavaScript. Jump in anywhere.</p>
+<div class="chips"><span>🟨 Beginner</span><span>⚙️ Intermediate</span><span>🚀 Advanced</span></div></header>
+<div class="section-banner"><div class="num">☰</div><div><h2>Choose a part</h2><p>Each part builds on the previous one — follow them in order, or jump to a topic.</p></div></div>
+<div class="grid"><a class="pcard" href="part-01.html"><div class="pn">1</div><h3>🟨 JavaScript Fundamentals</h3><p>What JS is, running it, variables and data types.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-02.html"><div class="pn">2</div><h3>➗ Operators & Expressions</h3><p>Arithmetic, comparison, logical operators and coercion.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-03.html"><div class="pn">3</div><h3>🔀 Control Flow</h3><p>Make decisions and repeat work with if, switch and loops.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-04.html"><div class="pn">4</div><h3>🔧 Functions</h3><p>Declarations, arrow functions, parameters and scope.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-05.html"><div class="pn">5</div><h3>📚 Arrays & Array Methods</h3><p>Store lists and transform them with map, filter, reduce.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-06.html"><div class="pn">6</div><h3>🧱 Objects</h3><p>Key-value data, methods, and ways to copy and merge.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-07.html"><div class="pn">7</div><h3>🔤 Strings & Numbers</h3><p>Manipulate text and work with numbers safely.</p><span class="lvl beg">Beginner</span></a><a class="pcard" href="part-08.html"><div class="pn">8</div><h3>🌳 The DOM</h3><p>Find and change page elements from JavaScript.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-09.html"><div class="pn">9</div><h3>🖱️ Events</h3><p>Respond to clicks, input and other user actions.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-10.html"><div class="pn">10</div><h3>🔒 Scope & Closures</h3><p>Lexical scope, the closure, and why it matters.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-11.html"><div class="pn">11</div><h3>🎯 this, call, apply & bind</h3><p>Understand and control the value of this.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-12.html"><div class="pn">12</div><h3>🧬 Prototypes & Classes</h3><p>Inheritance, the prototype chain and ES6 classes.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-13.html"><div class="pn">13</div><h3>🚨 Error Handling</h3><p>try/catch, throwing, and custom error types.</p><span class="lvl int">Intermediate</span></a><a class="pcard" href="part-14.html"><div class="pn">14</div><h3>⏳ Callbacks & Promises</h3><p>Asynchronous JavaScript and the Promise API.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-15.html"><div class="pn">15</div><h3>🌐 async / await & Fetch</h3><p>Write async code that reads like sync; call APIs.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-16.html"><div class="pn">16</div><h3>✨ Modern ES6+ Features</h3><p>Destructuring, spread/rest, optional chaining and more.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-17.html"><div class="pn">17</div><h3>🔁 Iterators & Generators</h3><p>Custom iteration, generators and Symbols.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-18.html"><div class="pn">18</div><h3>λ Functional Programming</h3><p>Pure functions, immutability and composition.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-19.html"><div class="pn">19</div><h3>📦 Modules & Tooling</h3><p>ES modules, npm, bundlers and the ecosystem.</p><span class="lvl adv">Advanced</span></a><a class="pcard" href="part-20.html"><div class="pn">20</div><h3>🏛️ Patterns & Best Practices</h3><p>Common patterns, performance and clean code.</p><span class="lvl adv">Advanced</span></a></div>
+<footer>Learn JavaScript · 20-part series · Built with a light soft-UI docs theme.</footer>
+</main></div>
+</body></html>

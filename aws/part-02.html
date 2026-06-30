@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Part 2: Accounts, IAM & Security — Learn AWS</title>
+<style>
+:root{
+  --page-bg:#eaf2fc;--card-bg:#ffffff;--accent:#1657c4;--accent-bright:#1f6fe0;
+  --accent-soft:#e3edfb;--ink:#16202e;--ink-soft:#44546a;--code-bg:#0b2a52;
+  --code-ink:#d6e4ff;--border:#d6e3f5;--green:#1f9d57;--red:#d6455a;--amber:#c98a12;
+  --shadow:0 8px 24px rgba(22,87,196,.08);--shadow-lg:0 16px 44px rgba(22,87,196,.14);
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+  background:var(--page-bg);color:var(--ink);line-height:1.65;font-size:16px}
+.shell{display:grid;grid-template-columns:270px 1fr;max-width:1280px;margin:0 auto}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:24px 16px 40px;border-right:1px solid var(--border)}
+.sidebar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.02rem;color:var(--accent);margin-bottom:8px;padding-left:6px}
+.sidebar .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;font-size:.9rem;box-shadow:var(--shadow)}
+.sidebar .partlabel{font-size:.72rem;color:var(--ink-soft);padding-left:6px;margin-bottom:18px;font-weight:600}
+.nav-group-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);margin:16px 0 6px 6px;font-weight:700}
+.sidebar a{display:block;text-decoration:none;color:var(--ink-soft);padding:7px 12px;border-radius:8px;font-size:.9rem;transition:all .15s}
+.sidebar a:hover{background:var(--accent-soft);color:var(--accent)}
+.sidebar a.home{color:var(--accent);font-weight:700}
+.content{padding:0 clamp(20px,4vw,56px) 80px;min-width:0}
+.hero{margin:28px 0 30px;padding:44px 42px;border-radius:22px;background:linear-gradient(135deg,#1f6fe0 0%,#1657c4 55%,#0e3f93 100%);color:#fff;box-shadow:var(--shadow-lg);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 70%);border-radius:50%}
+.hero .eyebrow{text-transform:uppercase;letter-spacing:.14em;font-size:.74rem;font-weight:700;opacity:.9}
+.hero h1{margin:12px 0 14px;font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.15;font-weight:800}
+.hero p{margin:0;max-width:640px;font-size:1.04rem;opacity:.95}
+.hero .chips{margin-top:20px;display:flex;flex-wrap:wrap;gap:10px}
+.hero .chips span{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.25);padding:6px 14px;border-radius:999px;font-size:.82rem;font-weight:600}
+.crumbs{display:flex;gap:8px;align-items:center;font-size:.85rem;margin:24px 0 0;color:var(--ink-soft)}
+.crumbs a{color:var(--accent);text-decoration:none}
+.section-banner{margin:48px 0 22px;padding:22px 26px;border-radius:16px;background:linear-gradient(120deg,var(--accent-soft),#f3f8ff);border:1px solid var(--border);border-left:5px solid var(--accent-bright);display:flex;align-items:center;gap:16px}
+.section-banner .num{flex:0 0 auto;width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.15rem;box-shadow:var(--shadow)}
+.section-banner h2{margin:0;font-size:1.45rem;color:var(--accent);font-weight:800}
+.section-banner p{margin:4px 0 0;color:var(--ink-soft);font-size:.92rem}
+.card{background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:24px 28px;margin:18px 0;box-shadow:var(--shadow)}
+.card h3{margin:0 0 12px;font-size:1.16rem;color:var(--ink);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.card h3 .tag{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;background:var(--accent-soft);color:var(--accent);padding:3px 9px;border-radius:6px}
+.card h4{margin:20px 0 8px;font-size:1.0rem;color:var(--accent)}
+.card p{margin:8px 0}.card ul,.card ol{margin:8px 0;padding-left:22px}.card li{margin:5px 0}
+.lead{color:var(--ink-soft)}
+pre{background:var(--code-bg);color:var(--code-ink);border-radius:12px;padding:18px 20px;overflow-x:auto;font-size:.88rem;line-height:1.6;margin:14px 0;border:1px solid #123a6b;box-shadow:inset 0 1px 0 rgba(255,255,255,.04),0 6px 18px rgba(11,42,82,.25);position:relative}
+pre code{font-family:"SF Mono","Fira Code","Cascadia Code",Consolas,monospace;white-space:pre}
+pre .lang{position:absolute;top:0;right:0;background:#123a6b;color:#8fb6f0;font-size:.66rem;font-weight:700;letter-spacing:.06em;padding:3px 10px;border-radius:0 12px 0 10px;text-transform:uppercase}
+.t-key{color:#6db3ff}.t-str{color:#7fe0a8}.t-num{color:#f3b05a}.t-com{color:#6b86ad;font-style:italic}.t-fn{color:#c79bff}.t-out{color:#9fd0ff}
+code.inline{background:var(--accent-soft);color:var(--accent);padding:2px 7px;border-radius:6px;font-family:"SF Mono",Consolas,monospace;font-size:.86em;font-weight:600}
+.callout{border-radius:12px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;align-items:flex-start;font-size:.94rem}
+.callout .ico{flex:0 0 auto;font-size:1.15rem;line-height:1.5}
+.callout.note{background:#eef5ff;border:1px solid #cfe0fb;color:#214a87}
+.callout.tip{background:#ecfaf1;border:1px solid #c2ebd2;color:#166c3c}
+.callout.warn{background:#fff6e8;border:1px solid #f3dcae;color:#8a5a08}
+table{width:100%;border-collapse:collapse;margin:14px 0;font-size:.92rem;border-radius:10px;overflow:hidden;box-shadow:var(--shadow)}
+th{background:var(--accent);color:#fff;text-align:left;padding:11px 16px;font-weight:700}
+td{padding:10px 16px;border-bottom:1px solid var(--border);background:#fff}
+tr:last-child td{border-bottom:none}tr:nth-child(even) td{background:#f6faff}
+.diagram{margin:18px 0;padding:22px;background:linear-gradient(180deg,#f7fbff,#fff);border:1px dashed #c4d8f5;border-radius:14px;text-align:center}
+.diagram .cap{font-size:.82rem;color:var(--ink-soft);margin-top:10px;font-style:italic}
+svg{max-width:100%;height:auto}
+.learned{list-style:none;padding:0;margin:10px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.learned li{background:#ecfaf1;border:1px solid #c2ebd2;color:#166c3c;padding:9px 14px;border-radius:9px;font-size:.88rem;font-weight:600}
+.learned li::before{content:"\2714  ";color:var(--green);font-weight:800}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.two-col{grid-template-columns:1fr}}
+.pager{display:flex;justify-content:space-between;gap:14px;margin-top:40px}
+.pager a{flex:1;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow);transition:all .15s}
+.pager a:hover{border-color:var(--accent-bright);transform:translateY(-2px)}
+.pager .dir{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700}
+.pager .ttl{display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem}
+.pager a.next{text-align:right}.pager a.disabled{opacity:.4;pointer-events:none}
+footer{margin-top:50px;padding:28px;text-align:center;color:var(--ink-soft);border-top:1px solid var(--border);font-size:.88rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:8px}
+.pcard{display:block;text-decoration:none;background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);transition:all .18s;position:relative;overflow:hidden}
+.pcard:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg);border-color:var(--accent-bright)}
+.pcard .pn{width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));color:#fff;display:grid;place-items:center;font-weight:800;font-size:1.05rem;box-shadow:var(--shadow);margin-bottom:12px}
+.pcard h3{margin:0 0 6px;color:var(--ink);font-size:1.05rem}
+.pcard p{margin:0;color:var(--ink-soft);font-size:.88rem}
+.pcard .lvl{display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:6px}
+.lvl.beg{background:#ecfaf1;color:#166c3c}.lvl.int{background:#eef5ff;color:#214a87}.lvl.adv{background:#fdeef0;color:#a62f43}
+@media(max-width:920px){.shell{grid-template-columns:1fr}.sidebar{display:none}}
+</style></head><body>
+<div class="shell">
+<aside class="sidebar"><div class="brand"><span class="logo">Aws</span> Learn AWS</div><div class="partlabel">Part 2 of 20</div><a class="home" href="index.html">← All parts</a><div class="nav-group-title">On this page</div><a href="#shared">Shared Responsibility</a><a href="#root">Securing the Root User</a><a href="#iam">IAM Building Blocks</a><a href="#policies">Policies & JSON</a><a href="#roles">Roles & Trust</a><a href="#best">Security Best Practices</a><a href="#recap">Recap & Practice</a></aside>
+<main class="content">
+<div class="crumbs"><a href="index.html">Learn AWS</a> › <span>Part 2</span></div>
+<header class="hero"><div class="eyebrow">Part 2 of 20 · Code-first</div><h1>Accounts, IAM & Security</h1><p>Users, roles, policies and the shared responsibility model.</p><div class="chips"><span>👤 IAM</span><span>🎭 roles</span><span>📜 policies</span></div></header>
+<div class="section-banner"><div class="num">B</div><div><h2>🔐 Accounts, IAM & Security</h2><p>Set up your account safely and master Identity and Access Management — the gatekeeper of everything in AWS.</p></div></div><div class="card"><h3><span class="tag">Who secures what</span> The Shared Responsibility Model</h3><span id="shared"></span><p>Security in AWS is <strong>shared</strong>. AWS secures the cloud; <strong>you</strong> secure what you put in it.</p><div class="diagram"><svg viewBox="0 0 640 120" role="img"><defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/></marker></defs><rect x="20" y="24" width="291" height="64" rx="12" fill="#0b2a52" stroke="#123a6b"/><text x="166" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#9fd0ff">AWS: of the cloud</text><text x="166" y="69" text-anchor="middle" font-size="11" fill="#9fd0ff">hardware, network, facilities</text><line x1="311" y1="56" x2="329" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="329" y="24" width="291" height="64" rx="12" fill="#e3edfb" stroke="#c4d8f5"/><text x="474" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">YOU: in the cloud</text><text x="474" y="69" text-anchor="middle" font-size="11" fill="#1657c4">data, IAM, configs</text></svg><div class="cap">AWS protects the infrastructure; you protect your data, access control and configuration.</div></div><table><tr><th>AWS responsibility</th><th>Your responsibility</th></tr><tr><td>Physical data centres</td><td>IAM users & permissions</td></tr><tr><td>Hardware & networking</td><td>Patching your EC2 OS</td></tr><tr><td>Managed service uptime</td><td>Encrypting your data</td></tr><tr><td>Hypervisor</td><td>Security group rules</td></tr></table><div class="callout note"><span class="ico">📌</span><div>Misconfigured access — a public S3 bucket or over-broad IAM policy — is the #1 cause of cloud breaches. That side is <em>your</em> responsibility.</div></div></div><div class="card"><h3><span class="tag">First thing, always</span> Secure the Root User</h3><span id="root"></span><p>The <strong>root user</strong> (your sign-up email) has unlimited power. Lock it down immediately and never use it day-to-day.</p><ul><li>Enable <b>MFA</b> (multi-factor authentication) on root.</li><li>Delete any root <b>access keys</b>.</li><li>Create an <b>admin IAM user</b> for everyday work.</li><li>Store the root credentials somewhere safe and offline.</li></ul><div class="callout warn"><span class="ico">⚠️</span><div>Only a handful of tasks <em>require</em> root (e.g. closing the account, changing billing). For everything else, use an IAM identity.</div></div></div><div class="card"><h3><span class="tag">Users, groups, roles</span> IAM Building Blocks</h3><span id="iam"></span><p><strong>IAM (Identity and Access Management)</strong> controls <em>who</em> can do <em>what</em>. It’s global and free.</p><table><tr><th>Entity</th><th>What it is</th></tr><tr><td><b>User</b></td><td>a person or app with long-term credentials</td></tr><tr><td><b>Group</b></td><td>a collection of users sharing permissions</td></tr><tr><td><b>Role</b></td><td>temporary permissions assumed on demand</td></tr><tr><td><b>Policy</b></td><td>a JSON document granting/denying actions</td></tr></table><div class="callout tip"><span class="ico">💡</span><div>Attach policies to <strong>groups</strong>, then add users to groups — far easier to manage than per-user permissions.</div></div></div><div class="card"><h3><span class="tag">Permissions as code</span> Policies & JSON</h3><span id="policies"></span><p>A <strong>policy</strong> lists allowed/denied <em>actions</em> on <em>resources</em>. Everything is denied by default until granted.</p><pre><code data-lang="json">{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": ["s3:GetObject", "s3:ListBucket"],
+      "Resource": [
+        "arn:aws:s3:::my-bucket",
+        "arn:aws:s3:::my-bucket/*"
+      ]
+    }
+  ]
+}</code></pre><div class="callout note"><span class="ico">📌</span><div>Key parts: <b>Effect</b> (Allow/Deny), <b>Action</b> (service:operation), <b>Resource</b> (an ARN). An explicit <b>Deny</b> always wins over any Allow.</div></div></div><div class="card"><h3><span class="tag">Temporary, safer access</span> Roles & Trust</h3><span id="roles"></span><p>A <strong>role</strong> grants temporary credentials to whoever <em>assumes</em> it — an EC2 instance, a Lambda, or a user from another account.</p><pre><code data-lang="json">{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": { "Service": "ec2.amazonaws.com" },
+    "Action": "sts:AssumeRole"
+  }]
+}</code></pre><p>Attach this <em>trust policy</em> so an EC2 instance can assume the role and access S3 — no access keys on the server.</p><div class="callout tip"><span class="ico">💡</span><div>Prefer <strong>roles</strong> over access keys for anything running inside AWS. Credentials are rotated automatically and never stored on disk.</div></div></div><div class="card"><h3><span class="tag">Do these now</span> Security Best Practices</h3><span id="best"></span><ul class="learned"><li>MFA on root and all users</li><li>Least privilege — grant only what’s needed</li><li>Use roles, not long-lived keys</li><li>Groups for shared permissions</li><li>Rotate credentials regularly</li><li>Audit with IAM Access Analyzer</li></ul><div class="callout warn"><span class="ico">⚠️</span><div><strong>Least privilege</strong> is the golden rule: start with no access and add permissions only as required. Never attach <code class="inline">AdministratorAccess</code> “just to make it work.”</div></div></div><div class="card"><h3><span class="tag">Summary</span> Recap & Practice</h3><span id="recap"></span><ul class="learned"><li>Shared responsibility model</li><li>Securing the root user</li><li>Users, groups, roles, policies</li><li>Reading a policy JSON</li><li>Roles & trust relationships</li><li>Least-privilege mindset</li></ul><h4>Practice</h4><ol><li>Enable MFA on a (test) root user and create an admin IAM user.</li><li>Write a policy that allows only <code class="inline">s3:GetObject</code> on one bucket.</li><li>Explain when you’d use a role instead of an IAM user.</li></ol><div class="callout tip"><span class="ico">💡</span><div>Next (Part 3): explore AWS’s global infrastructure and set up the CLI.</div></div></div>
+<div class="pager"><a class="prev" href="part-01.html"><span class="dir">← Previous</span><span class="ttl">Part 1: Cloud & AWS Fundamentals</span></a><a class="next" href="part-03.html"><span class="dir">Next →</span><span class="ttl">Part 3: Global Infrastructure</span></a></div>
+<footer>Learn AWS · Part 2 of 20 · Built with a light soft-UI docs theme.</footer>
+</main></div>
+<script>
+(function(){
+ var KW=new Set(("const let var function return if else for while do switch case break continue "+
+  "new class extends async await try catch finally throw typeof instanceof of in this null "+
+  "true false undefined import export default from require module exports yield static get set "+
+  "public private void "+
+  "readonly namespace declare keyof infer never unknown any abstract protected override satisfies asserts "+
+  "string number boolean object symbol bigint Record Partial Pick Omit Readonly "+
+  "def elif lambda None True False and or not is with as pass raise except global nonlocal "+
+  "assert del while elif print_function match case async await self cls "+
+  "type query mutation subscription schema scalar enum interface union input fragment on implements extend directive "+
+  "SELECT FROM WHERE INSERT INTO VALUES UPDATE DELETE CREATE TABLE ALTER DROP TRUNCATE ADD COLUMN RENAME "+
+  "PRIMARY KEY FOREIGN REFERENCES CONSTRAINT UNIQUE NOT NULL DEFAULT CHECK INDEX VIEW MATERIALIZED SEQUENCE "+
+  "JOIN INNER LEFT RIGHT FULL OUTER CROSS LATERAL ON USING NATURAL GROUP ORDER BY HAVING LIMIT OFFSET FETCH "+
+  "DISTINCT ALL AS AND OR NOT IN EXISTS ANY SOME BETWEEN LIKE ILIKE SIMILAR IS TRUE FALSE UNKNOWN "+
+  "CASE WHEN THEN ELSE END UNION INTERSECT EXCEPT WITH RECURSIVE RETURNING OVER PARTITION WINDOW FILTER "+
+  "BEGIN COMMIT ROLLBACK SAVEPOINT TRANSACTION ISOLATION LEVEL SET GRANT REVOKE ROLE USER "+
+  "INT INTEGER SMALLINT BIGINT SERIAL BIGSERIAL VARCHAR CHARACTER VARYING TEXT CHAR BOOLEAN BOOL "+
+  "DATE TIME TIMESTAMP TIMESTAMPTZ INTERVAL NUMERIC DECIMAL REAL DOUBLE PRECISION FLOAT MONEY BYTEA "+
+  "JSON JSONB UUID ARRAY ENUM CIDR INET TSVECTOR GENERATED ALWAYS IDENTITY "+
+  "COUNT SUM AVG MIN MAX COALESCE NULLIF GREATEST LEAST CAST EXTRACT NOW "+
+  "EXPLAIN ANALYZE VACUUM CLUSTER COPY FUNCTION PROCEDURE RETURNS LANGUAGE TRIGGER BEFORE AFTER INSTEAD "+
+  "DECLARE LOOP PERFORM ELSIF EXECUTE PLPGSQL CONCURRENTLY CASCADE RESTRICT TEMP TEMPORARY UNLOGGED "+
+  "ASC DESC NULLS FIRST LAST FOR SHARE LOCK NOWAIT EXCLUDED CONFLICT DO NOTHING ONLY VARIADIC ROWS RANGE").split(" "));
+ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+ function hl(code,lang){
+  if(lang==='output'||lang==='text'){return '<span class="t-out">'+esc(code)+'</span>';}
+  var hash=(lang==='bash'||lang==='sh'||lang==='yaml'||lang==='env'||lang==='python'||lang==='py'||lang==='toml'||lang==='graphql'||lang==='gql');
+  var dash=(lang==='sql'||lang==='psql'||lang==='postgres'||lang==='plpgsql');
+  var out='',i=0,n=code.length;
+  function isW(c){return /[A-Za-z0-9_$]/.test(c);}
+  while(i<n){
+   var c=code[i];
+   if(c==='/'&&code[i+1]==='/'){var j=code.indexOf('\n',i);if(j<0)j=n;out+='<span class="t-com">'+esc(code.slice(i,j))+'</span>';i=j;continue;}
+   if(c==='-'&&code[i+1]==='-'&&dash){var jd=code.indexOf('\n',i);if(jd<0)jd=n;out+='<span class="t-com">'+esc(code.slice(i,jd))+'</span>';i=jd;continue;}
+   if(c==='#'&&hash){var j2=code.indexOf('\n',i);if(j2<0)j2=n;out+='<span class="t-com">'+esc(code.slice(i,j2))+'</span>';i=j2;continue;}
+   if(c==='/'&&code[i+1]==='*'){var j3=code.indexOf('*/',i);if(j3<0)j3=n;else j3+=2;out+='<span class="t-com">'+esc(code.slice(i,j3))+'</span>';i=j3;continue;}
+   if((c==='"'||c==="'")&&code[i+1]===c&&code[i+2]===c){var tq=c+c+c;var e=code.indexOf(tq,i+3);if(e<0)e=n;else e+=3;out+='<span class="t-str">'+esc(code.slice(i,e))+'</span>';i=e;continue;}
+   if(c==='"'||c==="'"||c==='`'){var q=c,k=i+1;while(k<n&&code[k]!==q){if(code[k]==='\\')k++;k++;}k++;out+='<span class="t-str">'+esc(code.slice(i,k))+'</span>';i=k;continue;}
+   if(/[0-9]/.test(c)&&!isW(code[i-1]||'')){var m=code.slice(i).match(/^[0-9_.]+/)[0];out+='<span class="t-num">'+esc(m)+'</span>';i+=m.length;continue;}
+   if(isW(c)){var w=code.slice(i).match(/^[A-Za-z0-9_$]+/)[0];i+=w.length;
+     var after=code.slice(i).match(/^\s*/)[0];var follow=code[i+after.length];
+     if(KW.has(w)){out+='<span class="t-key">'+w+'</span>';}
+     else if(follow==='('){out+='<span class="t-fn">'+w+'</span>';}
+     else{out+=esc(w);}
+     continue;}
+   out+=esc(c);i++;
+  }
+  return out;
+ }
+ document.querySelectorAll('pre > code').forEach(function(cb){
+   var lang=(cb.getAttribute('data-lang')||'').toLowerCase();
+   cb.innerHTML=hl(cb.textContent,lang);
+   if(lang){var s=document.createElement('span');s.className='lang';s.textContent=lang;cb.parentNode.appendChild(s);}
+ });
+})();
+</script>
+</body></html>
