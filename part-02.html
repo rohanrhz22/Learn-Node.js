@@ -100,7 +100,7 @@ const app = express();
 
 app.use(express.json()); // parse JSON request bodies
 
-let users = [{ id: 1, name: "Sandya" }]; // fake "database"
+let users = [{ id: 1, name: "Adithya" }]; // fake "database"
 let nextId = 2;
 </code></pre><h4>CREATE — POST /users</h4><pre><code data-lang="javascript">app.post("/users", (req, res) =&gt; {
   const user = { id: nextId++, name: req.body.name };

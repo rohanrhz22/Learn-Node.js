@@ -97,7 +97,7 @@ with open("notes.txt") as f:
 with open("log.txt", "a") as f:   # append
     f.write("added later\n")</code></pre><div class="callout warn"><span class="ico">⚠️</span><div><code class="inline">"w"</code> silently erases existing content. Use <code class="inline">"a"</code> to add without losing data.</div></div></div><div class="card"><h3><span class="tag">Safety</span> Why with?</h3><span id="with"></span><p>The <code class="inline">with</code> statement is a <strong>context manager</strong>: it guarantees the file is closed even if an error occurs mid-way.</p><div class="diagram"><svg viewBox="0 0 640 120" role="img"><defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/></marker></defs><rect x="20" y="24" width="188" height="64" rx="12" fill="#e3edfb" stroke="#c4d8f5"/><text x="114" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">open file</text><line x1="208" y1="56" x2="226" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="226" y="24" width="188" height="64" rx="12" fill="#fff6e8" stroke="#f3dcae"/><text x="320" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">do work</text><line x1="414" y1="56" x2="432" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="432" y="24" width="188" height="64" rx="12" fill="#d7f0e0" stroke="#c2ebd2"/><text x="526" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">auto-close (always)</text></svg><div class="cap">with handles cleanup for you — no forgotten f.close().</div></div><div class="callout tip"><span class="ico">💡</span><div>Always prefer <code class="inline">with open(...)</code> over manually calling <code class="inline">.close()</code>.</div></div></div><div class="card"><h3><span class="tag">Exchange</span> JSON — structured data</h3><span id="json"></span><p>JSON is the universal format for APIs and configs. The <code class="inline">json</code> module converts between Python objects and JSON text.</p><pre><code data-lang="python">import json
 
-data = {"name": "Sandya", "skills": ["Python", "SQL"]}
+data = {"name": "Adithya", "skills": ["Python", "SQL"]}
 
 # Python -&gt; file
 with open("data.json", "w") as f:
@@ -114,7 +114,7 @@ json.loads('{"a":1}')# -&gt; Python dict</code></pre><div class="callout note"><
 with open("users.csv", "w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow(["name", "age"])
-    writer.writerow(["Sandya", 25])
+    writer.writerow(["Adithya", 27])
 
 # read rows as dicts
 with open("users.csv", newline="") as f:

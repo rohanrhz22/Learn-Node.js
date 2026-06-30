@@ -98,9 +98,9 @@ rex.bark()           # "Rex says woof!"</code></pre><div class="diagram"><svg vi
         self.name = name     # store on this object
         self.age = age
 
-u = User("Sandya", 25)
-u.name               # "Sandya"
-u.age                # 25</code></pre><div class="callout note"><span class="ico">📌</span><div><code class="inline">self</code> is automatically passed by Python — you never pass it manually. It's how the method knows <em>which</em> object's data to use.</div></div></div><div class="card"><h3><span class="tag">Behaviour</span> Methods — behaviour</h3><span id="methods"></span><p>Methods are functions defined inside a class. They act on the object's own data through <code class="inline">self</code>.</p><pre><code data-lang="python">class BankAccount:
+u = User("Adithya", 27)
+u.name               # "Adithya"
+u.age                # 27</code></pre><div class="callout note"><span class="ico">📌</span><div><code class="inline">self</code> is automatically passed by Python — you never pass it manually. It's how the method knows <em>which</em> object's data to use.</div></div></div><div class="card"><h3><span class="tag">Behaviour</span> Methods — behaviour</h3><span id="methods"></span><p>Methods are functions defined inside a class. They act on the object's own data through <code class="inline">self</code>.</p><pre><code data-lang="python">class BankAccount:
     def __init__(self, balance=0):
         self.balance = balance
 
@@ -129,7 +129,7 @@ a.name, b.name       # "Rex", "Fido"  (different)</code></pre><div class="callou
     def __str__(self):
         return f"User({self.name})"
 
-print(User("Sandya"))   # User(Sandya)</code></pre><div class="callout note"><span class="ico">📌</span><div><code class="inline">__str__</code> is one of many <em>dunder</em> (double-underscore) methods. You'll meet more in Part 10.</div></div></div><div class="card"><h3><span class="tag">Summary</span> Recap & Practice</h3><span id="recap"></span><ul class="learned"><li>Classes vs objects</li><li>__init__ & self</li><li>Methods</li><li>Class vs instance attrs</li><li>__str__</li></ul><h4>Practice</h4><ol><li>Write a <code class="inline">Rectangle</code> class with <code class="inline">area()</code> and <code class="inline">perimeter()</code>.</li><li>Build a <code class="inline">BankAccount</code> with deposit/withdraw and a <code class="inline">__str__</code>.</li><li>Add a class attribute <code class="inline">count</code> that tracks how many objects were created.</li></ol><div class="callout tip"><span class="ico">💡</span><div>Next (Part 10): inheritance, polymorphism and dataclasses.</div></div></div>
+print(User("Adithya"))   # User(Adithya)</code></pre><div class="callout note"><span class="ico">📌</span><div><code class="inline">__str__</code> is one of many <em>dunder</em> (double-underscore) methods. You'll meet more in Part 10.</div></div></div><div class="card"><h3><span class="tag">Summary</span> Recap & Practice</h3><span id="recap"></span><ul class="learned"><li>Classes vs objects</li><li>__init__ & self</li><li>Methods</li><li>Class vs instance attrs</li><li>__str__</li></ul><h4>Practice</h4><ol><li>Write a <code class="inline">Rectangle</code> class with <code class="inline">area()</code> and <code class="inline">perimeter()</code>.</li><li>Build a <code class="inline">BankAccount</code> with deposit/withdraw and a <code class="inline">__str__</code>.</li><li>Add a class attribute <code class="inline">count</code> that tracks how many objects were created.</li></ol><div class="callout tip"><span class="ico">💡</span><div>Next (Part 10): inheritance, polymorphism and dataclasses.</div></div></div>
 <div class="pager"><a class="prev" href="part-08.html"><span class="dir">← Previous</span><span class="ttl">Part 8: Errors & Exceptions</span></a><a class="next" href="part-10.html"><span class="dir">Next →</span><span class="ttl">Part 10: OOP Advanced</span></a></div>
 <footer>Learn Python · Part 9 of 20 · Built with a light soft-UI docs theme.</footer>
 </main></div>

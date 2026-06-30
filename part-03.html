@@ -124,7 +124,7 @@ exports.remove = (req, res) =&gt; {
   User.remove(Number(req.params.id));
   res.status(204).end();
 };</code></pre><div class="callout note"><span class="ico">📌</span><div>Notice the controller never knows <em>how</em> data is stored — it just calls <code class="inline">User.create()</code>. That's the model's job.</div></div></div><div class="card"><h3><span class="tag">Data</span> Models</h3><span id="model"></span><p>The model owns the data. Today it's an in-memory array; in Part 5 the same interface is backed by MongoDB — and the controller won't change.</p><pre><code data-lang="javascript">// src/models/userModel.js
-let users = [{ id: 1, name: "Sandya" }];
+let users = [{ id: 1, name: "Adithya" }];
 let nextId = 2;
 
 exports.findAll = () =&gt; users;

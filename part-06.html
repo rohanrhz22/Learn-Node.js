@@ -134,7 +134,7 @@ const postSchema = new mongoose.Schema({
 module.exports = mongoose.model("Post", postSchema);</code></pre><pre><code data-lang="javascript">// querying with the author filled in
 const posts = await Post.find().populate("author", "name email");
 /*
-[{ title: "...", author: { name: "Sandya", email: "a@x.com" } }]
+[{ title: "...", author: { name: "Adithya", email: "a@x.com" } }]
 */</code></pre><div class="callout tip"><span class="ico">💡</span><div><code class="inline">populate</code>'s second argument selects only the fields you need from the referenced document — keep responses lean.</div></div></div><div class="card"><h3><span class="tag">Pattern</span> Embedding (Subdocuments)</h3><span id="embed"></span><p>For tightly-coupled data, nest a schema directly inside the parent document:</p><pre><code data-lang="javascript">const addressSchema = new mongoose.Schema({
   street: String,
   city: String,

@@ -86,7 +86,7 @@ footer{margin-top:50px;padding:28px;text-align:center;color:var(--ink-soft);bord
 <div class="crumbs"><a href="index.html">Learn Python</a> › <span>Part 19</span></div>
 <header class="hero"><div class="eyebrow">Part 19 of 20 · Code-first</div><h1>Databases: sqlite3 & SQLAlchemy</h1><p>Persist data with SQL, the sqlite3 module and the SQLAlchemy ORM.</p><div class="chips"><span>🗄️ sqlite3</span><span>🧰 SQLAlchemy</span><span>🔗 ORM</span></div></header>
 <div class="section-banner"><div class="num">A</div><div><h2>🗄️ Databases: sqlite3 & SQLAlchemy</h2><p>Store data permanently with SQL and an ORM.</p></div></div><div class="card"><h3><span class="tag">Foundation</span> SQL in 60 Seconds</h3><span id="sql"></span><p>Relational databases store data in <strong>tables</strong> (rows & columns). You talk to them with <strong>SQL</strong>.</p><pre><code data-lang="sql">CREATE TABLE users (id INTEGER PRIMARY KEY, name TEXT, age INT);
-INSERT INTO users (name, age) VALUES ('Sandya', 25);
+INSERT INTO users (name, age) VALUES ('Adithya', 25);
 SELECT * FROM users WHERE age &gt; 18;
 UPDATE users SET age = 26 WHERE id = 1;
 DELETE FROM users WHERE id = 1;</code></pre><div class="callout note"><span class="ico">📌</span><div><code class="inline">sqlite3</code> is built into Python — a whole database in a single file, zero setup. Perfect for learning and small apps.</div></div></div><div class="card"><h3><span class="tag">Built-in</span> The sqlite3 Module</h3><span id="sqlite"></span><p>Connect, get a cursor, run SQL, then <code class="inline">commit</code> to save.</p><pre><code data-lang="python">import sqlite3
@@ -96,7 +96,7 @@ cur = conn.cursor()
 cur.execute("CREATE TABLE IF NOT EXISTS users("
             "id INTEGER PRIMARY KEY, name TEXT, age INT)")
 cur.execute("INSERT INTO users (name, age) VALUES (?, ?)",
-            ("Sandya", 25))
+            ("Adithya", 25))
 conn.commit()        # save changes
 conn.close()</code></pre><div class="diagram"><svg viewBox="0 0 640 120" role="img"><defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/></marker></defs><rect x="20" y="24" width="188" height="64" rx="12" fill="#e3edfb" stroke="#c4d8f5"/><text x="114" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">connect</text><line x1="208" y1="56" x2="226" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="226" y="24" width="188" height="64" rx="12" fill="#fff6e8" stroke="#f3dcae"/><text x="320" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">execute SQL</text><line x1="414" y1="56" x2="432" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="432" y="24" width="188" height="64" rx="12" fill="#d7f0e0" stroke="#c2ebd2"/><text x="526" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">commit + close</text></svg><div class="cap">Always commit to persist, and close the connection when done.</div></div></div><div class="card"><h3><span class="tag">Security</span> Safe Queries (No SQL Injection)</h3><span id="safe"></span><p>Never build SQL with f-strings from user input. Use <code class="inline">?</code> placeholders — the driver escapes values safely.</p><pre><code data-lang="python">name = input("name: ")
 
@@ -119,7 +119,7 @@ class User(Base):
 engine = create_engine("sqlite:///app.db")
 Base.metadata.create_all(engine)   # creates tables</code></pre><div class="callout note"><span class="ico">📌</span><div>Each <code class="inline">User</code> object is a row. The ORM writes the SQL for you and works across SQLite, Postgres, MySQL.</div></div></div><div class="card"><h3><span class="tag">Persist</span> ORM CRUD</h3><span id="crud"></span><p>Create, read, update and delete rows through a <code class="inline">Session</code>.</p><pre><code data-lang="python">with Session(engine) as session:
     # CREATE
-    session.add(User(name="Sandya", age=25))
+    session.add(User(name="Adithya", age=25))
     session.commit()
 
     # UPDATE
