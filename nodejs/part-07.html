@@ -222,7 +222,7 @@ npx sequelize-cli db:migrate:undo   # roll back</code></pre><div class="callout 
 <script>
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const sidebarToggleLabel = document.querySelector('.sidebar-toggle .text');
-  const savedState = localStorage.getItem('sidebar-collapsed');
+  const savedState = localStorage.getItem('nodejs-sidebar-collapsed');
   if (savedState === 'true') sidebarToggle.checked = true;
   const syncSidebarToggleLabel = () => {
     sidebarToggleLabel.textContent = sidebarToggle.checked ? 'Show sidebar' : 'Hide sidebar';
@@ -230,14 +230,14 @@ npx sequelize-cli db:migrate:undo   # roll back</code></pre><div class="callout 
   };
   syncSidebarToggleLabel();
   sidebarToggle.addEventListener('change', () => {
-    localStorage.setItem('sidebar-collapsed', String(sidebarToggle.checked));
+    localStorage.setItem('nodejs-sidebar-collapsed', String(sidebarToggle.checked));
     syncSidebarToggleLabel();
   });
 
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = themeToggle.querySelector('.icon');
   const themeText = themeToggle.querySelector('.text');
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = localStorage.getItem('nodejs-theme');
   if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   function syncThemeToggle() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -249,10 +249,10 @@ npx sequelize-cli db:migrate:undo   # roll back</code></pre><div class="callout 
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     if (isDark) {
       document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('nodejs-theme', 'light');
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem('nodejs-theme', 'dark');
     }
     syncThemeToggle();
   });
