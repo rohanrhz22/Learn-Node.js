@@ -130,22 +130,37 @@
     z-index: 30;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    justify-content: center;
+    gap: 0;
     border: 1px solid var(--border);
     border-radius: 999px;
     background: var(--sidebar-toggle-bg);
     color: var(--accent);
-    padding: 10px 14px;
-    font-size: 0.82rem;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 0.74rem;
     font-weight: 700;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 12px rgba(22, 87, 196, 0.12);
     cursor: pointer;
     user-select: none;
   }
 
   .sidebar-toggle .icon {
-    font-size: 1rem;
+    font-size: 0.9rem;
     line-height: 1;
+  }
+
+  .sidebar-toggle .text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   #sidebar-toggle {
@@ -507,16 +522,16 @@
     border-radius: 999px;
     background: var(--sidebar-toggle-bg);
     color: var(--accent);
-    padding: 10px 14px;
-    font-size: 0.82rem;
+    padding: 7px 11px;
+    font-size: 0.74rem;
     font-weight: 700;
-    box-shadow: var(--shadow);
+    box-shadow: 0 4px 12px rgba(22, 87, 196, 0.12);
     cursor: pointer;
     user-select: none;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
   }
   .theme-toggle:hover { background: var(--accent-soft); }
-  .theme-toggle .icon { font-size: 1rem; line-height: 1; }
+  .theme-toggle .icon { font-size: 0.9rem; line-height: 1; }
 
   /* smooth transitions for theme switch */
   body, .card, .sidebar, .section-banner, .callout, .diagram, td,
@@ -533,11 +548,22 @@
     .shell { grid-template-columns: 1fr; }
     .sidebar { display: none; }
   }
+
+  @media (max-width: 640px) {
+    .sidebar-toggle,
+    .theme-toggle {
+      top: 12px;
+      font-size: 0.68rem;
+    }
+
+    .sidebar-toggle { left: 12px; }
+    .theme-toggle { right: 12px; }
+  }
 </style>
 </head>
 <body>
 <input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
-<label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
+<label class="sidebar-toggle" for="sidebar-toggle" title="Show or hide sidebar"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"><span class="icon">🌙</span><span class="text">Dark</span></button>
 <div class="shell">
 

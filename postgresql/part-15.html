@@ -42,6 +42,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Ari
 .sidebar-toggle{position:fixed;top:18px;left:18px;z-index:30;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:999px;background:var(--sidebar-toggle-bg);color:var(--accent);padding:10px 14px;font-size:.82rem;font-weight:700;box-shadow:var(--shadow);cursor:pointer;user-select:none}
 
 .sidebar-toggle .icon{font-size:1rem;line-height:1}
+.sidebar-toggle .text{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 
 #sidebar-toggle{position:absolute;opacity:0;pointer-events:none}
 
@@ -247,7 +248,7 @@ CALL archive_old_orders();</code></pre><div class="callout warn"><span class="ic
 <script>
   const sidebarToggle = document.getElementById('sidebar-toggle');
   const sidebarToggleLabel = document.querySelector('.sidebar-toggle .text');
-  const savedState = localStorage.getItem('sidebar-collapsed');
+  const savedState = localStorage.getItem('postgresql-sidebar-collapsed');
   if (savedState === 'true') sidebarToggle.checked = true;
   const syncSidebarToggleLabel = () => {
     sidebarToggleLabel.textContent = sidebarToggle.checked ? 'Show sidebar' : 'Hide sidebar';
@@ -255,14 +256,14 @@ CALL archive_old_orders();</code></pre><div class="callout warn"><span class="ic
   };
   syncSidebarToggleLabel();
   sidebarToggle.addEventListener('change', () => {
-    localStorage.setItem('sidebar-collapsed', String(sidebarToggle.checked));
+    localStorage.setItem('postgresql-sidebar-collapsed', String(sidebarToggle.checked));
     syncSidebarToggleLabel();
   });
 
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = themeToggle.querySelector('.icon');
   const themeText = themeToggle.querySelector('.text');
-  const savedTheme = localStorage.getItem('theme');
+  const savedTheme = localStorage.getItem('postgresql-theme');
   if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
   function syncThemeToggle() {
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
@@ -274,10 +275,10 @@ CALL archive_old_orders();</code></pre><div class="callout warn"><span class="ic
     const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
     if (isDark) {
       document.documentElement.removeAttribute('data-theme');
-      localStorage.setItem('theme', 'light');
+      localStorage.setItem('postgresql-theme', 'light');
     } else {
       document.documentElement.setAttribute('data-theme', 'dark');
-      localStorage.setItem('theme', 'dark');
+      localStorage.setItem('postgresql-theme', 'dark');
     }
     syncThemeToggle();
   });
