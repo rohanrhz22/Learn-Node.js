@@ -120,6 +120,7 @@ body,.card,.sidebar,.section-banner,.callout,.diagram,td,.sidebar-toggle,.theme-
  </style></head><body>
 <input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
 <label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"><span class="icon">&#127769;</span><span class="text">Dark</span></button>
 <div class="shell">
 <aside class="sidebar"><div class="brand"><span class="logo">JS</span> Learn Node.js</div><div class="partlabel">Part 4 of 20</div><a class="home" href="index.html">← All parts</a><div class="nav-group-title">On this page</div><a href="#what">What is Middleware?</a><a href="#types">Types of Middleware</a><a href="#custom">Writing Custom Middleware</a><a href="#errors">Error Handling</a><a href="#async">Async Errors</a><a href="#recap">Recap & Practice</a></aside>
 <main class="content">
@@ -208,21 +209,6 @@ exports.getOne = catchAsync(async (req, res) =&gt; {
    if(lang){var s=document.createElement('span');s.className='lang';s.textContent=lang;cb.parentNode.appendChild(s);}
  });
 })();
-</script>
-<script>
-  const sidebarToggle = document.getElementById('sidebar-toggle');
-  const sidebarToggleLabel = document.querySelector('.sidebar-toggle .text');
-  const savedState = localStorage.getItem('nodejs-sidebar-collapsed');
-  if (savedState === 'true') sidebarToggle.checked = true;
-  const syncSidebarToggleLabel = () => {
-    sidebarToggleLabel.textContent = sidebarToggle.checked ? 'Show sidebar' : 'Hide sidebar';
-    sidebarToggle.setAttribute('aria-pressed', String(sidebarToggle.checked));
-  };
-  syncSidebarToggleLabel();
-  sidebarToggle.addEventListener('change', () => {
-    localStorage.setItem('nodejs-sidebar-collapsed', String(sidebarToggle.checked));
-    syncSidebarToggleLabel();
-  });
 </script>
 <script>
   const sidebarToggle = document.getElementById('sidebar-toggle');
