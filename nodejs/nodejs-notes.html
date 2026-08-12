@@ -21,6 +21,72 @@
     --amber: #c98a12;
     --shadow: 0 8px 24px rgba(22, 87, 196, 0.08);
     --shadow-lg: 0 16px 44px rgba(22, 87, 196, 0.14);
+    --callout-note-bg: #eef5ff;
+    --callout-note-border: #cfe0fb;
+    --callout-note-ink: #214a87;
+    --callout-tip-bg: #ecfaf1;
+    --callout-tip-border: #c2ebd2;
+    --callout-tip-ink: #166c3c;
+    --callout-warn-bg: #fff6e8;
+    --callout-warn-border: #f3dcae;
+    --callout-warn-ink: #8a5a08;
+    --table-alt: #f6faff;
+    --table-cell-bg: #fff;
+    --diagram-bg-start: #f7fbff;
+    --diagram-bg-end: #ffffff;
+    --diagram-border: #c4d8f5;
+    --diagram-label: #44546a;
+    --learned-bg: #ecfaf1;
+    --learned-border: #c2ebd2;
+    --learned-ink: #166c3c;
+    --sidebar-toggle-bg: #fff;
+    --section-banner-bg-start: var(--accent-soft);
+    --section-banner-bg-end: #f3f8ff;
+    --code-border: #123a6b;
+    --code-lang-bg: #123a6b;
+    --code-lang-ink: #8fb6f0;
+  }
+
+  [data-theme="dark"] {
+    --page-bg: #0f1419;
+    --card-bg: #1a2332;
+    --accent: #5b9cf5;
+    --accent-bright: #70adff;
+    --accent-soft: #1e2d42;
+    --ink: #d8e2ef;
+    --ink-soft: #8b9bb5;
+    --code-bg: #0d1520;
+    --code-ink: #d6e4ff;
+    --border: #253245;
+    --green: #3dc97a;
+    --red: #f06a7a;
+    --amber: #f0b94d;
+    --shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 16px 44px rgba(0, 0, 0, 0.35);
+    --callout-note-bg: #152238;
+    --callout-note-border: #253a5a;
+    --callout-note-ink: #8bb8f0;
+    --callout-tip-bg: #132a1e;
+    --callout-tip-border: #1e4a30;
+    --callout-tip-ink: #6cd99a;
+    --callout-warn-bg: #2a2210;
+    --callout-warn-border: #4a3a18;
+    --callout-warn-ink: #f0c860;
+    --table-alt: #1e2a3a;
+    --table-cell-bg: #1a2332;
+    --diagram-bg-start: #141c28;
+    --diagram-bg-end: #1a2332;
+    --diagram-border: #253a5a;
+    --diagram-label: #8b9bb5;
+    --learned-bg: #132a1e;
+    --learned-border: #1e4a30;
+    --learned-ink: #6cd99a;
+    --sidebar-toggle-bg: #1a2332;
+    --section-banner-bg-start: var(--accent-soft);
+    --section-banner-bg-end: #141c28;
+    --code-border: #1a3050;
+    --code-lang-bg: #1a3050;
+    --code-lang-ink: #70adff;
   }
 
   * { box-sizing: border-box; }
@@ -67,7 +133,7 @@
     gap: 8px;
     border: 1px solid var(--border);
     border-radius: 999px;
-    background: #fff;
+    background: var(--sidebar-toggle-bg);
     color: var(--accent);
     padding: 10px 14px;
     font-size: 0.82rem;
@@ -209,7 +275,7 @@
     margin: 52px 0 24px;
     padding: 22px 26px;
     border-radius: 16px;
-    background: linear-gradient(120deg, var(--accent-soft), #f3f8ff);
+    background: linear-gradient(120deg, var(--section-banner-bg-start), var(--section-banner-bg-end));
     border: 1px solid var(--border);
     border-left: 5px solid var(--accent-bright);
     display: flex;
@@ -282,7 +348,7 @@
     font-size: 0.88rem;
     line-height: 1.6;
     margin: 14px 0;
-    border: 1px solid #123a6b;
+    border: 1px solid var(--code-border);
     box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 6px 18px rgba(11,42,82,0.25);
     position: relative;
   }
@@ -290,11 +356,30 @@
     font-family: "SF Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New", monospace;
     white-space: pre;
   }
+  pre .copy-btn {
+    position: absolute;
+    top: 6px; right: 70px;
+    background: rgba(255,255,255,0.1);
+    color: var(--code-ink);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s;
+  }
+  pre:hover .copy-btn { opacity: 1; }
+  pre .copy-btn:hover { background: rgba(255,255,255,0.2); }
+  pre .copy-btn.copied { background: var(--green); color: #fff; border-color: var(--green); opacity: 1; }
+
   pre .lang {
     position: absolute;
     top: 0; right: 0;
-    background: #123a6b;
-    color: #8fb6f0;
+    background: var(--code-lang-bg);
+    color: var(--code-lang-ink);
     font-size: 0.66rem;
     font-weight: 700;
     letter-spacing: 0.06em;
@@ -331,9 +416,9 @@
     font-size: 0.94rem;
   }
   .callout .ico { flex: 0 0 auto; font-size: 1.15rem; line-height: 1.5; }
-  .callout.note   { background: #eef5ff; border: 1px solid #cfe0fb; color: #214a87; }
-  .callout.tip    { background: #ecfaf1; border: 1px solid #c2ebd2; color: #166c3c; }
-  .callout.warn   { background: #fff6e8; border: 1px solid #f3dcae; color: #8a5a08; }
+  .callout.note   { background: var(--callout-note-bg); border: 1px solid var(--callout-note-border); color: var(--callout-note-ink); }
+  .callout.tip    { background: var(--callout-tip-bg); border: 1px solid var(--callout-tip-border); color: var(--callout-tip-ink); }
+  .callout.warn   { background: var(--callout-warn-bg); border: 1px solid var(--callout-warn-border); color: var(--callout-warn-ink); }
 
   /* ---------- Tables ---------- */
   table {
@@ -352,16 +437,16 @@
     padding: 11px 16px;
     font-weight: 700;
   }
-  td { padding: 10px 16px; border-bottom: 1px solid var(--border); background: #fff; }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--table-cell-bg); }
   tr:last-child td { border-bottom: none; }
-  tr:nth-child(even) td { background: #f6faff; }
+  tr:nth-child(even) td { background: var(--table-alt); }
 
   /* ---------- Diagrams ---------- */
   .diagram {
     margin: 18px 0;
     padding: 22px;
-    background: linear-gradient(180deg, #f7fbff, #ffffff);
-    border: 1px dashed #c4d8f5;
+    background: linear-gradient(180deg, var(--diagram-bg-start), var(--diagram-bg-end));
+    border: 1px dashed var(--diagram-border);
     border-radius: 14px;
     text-align: center;
   }
@@ -383,9 +468,9 @@
     gap: 8px;
   }
   .learned li {
-    background: #ecfaf1;
-    border: 1px solid #c2ebd2;
-    color: #166c3c;
+    background: var(--learned-bg);
+    border: 1px solid var(--learned-border);
+    color: var(--learned-ink);
     padding: 9px 14px;
     border-radius: 9px;
     font-size: 0.88rem;
@@ -409,6 +494,41 @@
     font-size: 0.88rem;
   }
 
+  /* ---------- Dark mode toggle ---------- */
+  .theme-toggle {
+    position: fixed;
+    top: 18px;
+    right: 18px;
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--sidebar-toggle-bg);
+    color: var(--accent);
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { background: var(--accent-soft); }
+  .theme-toggle .icon { font-size: 1rem; line-height: 1; }
+
+  /* smooth transitions for theme switch */
+  body, .card, .sidebar, .section-banner, .callout, .diagram, td,
+  .sidebar-toggle, .theme-toggle, pre, .learned li {
+    transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  }
+
+  /* dark mode SVG adjustments */
+  [data-theme="dark"] .diagram svg text { fill: var(--diagram-label); }
+  [data-theme="dark"] .diagram svg line { stroke: #3a5a8a; }
+  [data-theme="dark"] .diagram svg circle { fill: var(--accent); }
+
   @media (max-width: 920px) {
     .shell { grid-template-columns: 1fr; }
     .sidebar { display: none; }
@@ -418,6 +538,7 @@
 <body>
 <input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
 <label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
+<button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"><span class="icon">🌙</span><span class="text">Dark</span></button>
 <div class="shell">
 
   <!-- ============ SIDEBAR ============ -->
@@ -1243,11 +1364,11 @@ app.<span class="t-fn">post</span>(<span class="t-str">"/user"</span>, (req, res
     </div>
 
     <div class="pager" style="display:flex;justify-content:space-between;gap:14px;margin-top:40px">
-      <a class="prev disabled" style="flex:1;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow);opacity:.4;pointer-events:none">
+      <a class="prev disabled" style="flex:1;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:var(--card-bg);box-shadow:var(--shadow);opacity:.4;pointer-events:none">
         <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700">← Previous</span>
         <span style="display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem">Start of series</span>
       </a>
-      <a class="next" href="part-02.html" style="flex:1;text-align:right;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:#fff;box-shadow:var(--shadow)">
+      <a class="next" href="part-02.html" style="flex:1;text-align:right;text-decoration:none;border:1px solid var(--border);border-radius:14px;padding:16px 20px;background:var(--card-bg);box-shadow:var(--shadow)">
         <span style="font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-weight:700">Next →</span>
         <span style="display:block;margin-top:4px;color:var(--accent);font-weight:700;font-size:.95rem">Part 2: REST APIs &amp; CRUD</span>
       </a>
@@ -1273,6 +1394,47 @@ app.<span class="t-fn">post</span>(<span class="t-str">"/user"</span>, (req, res
   sidebarToggle.addEventListener('change', () => {
     localStorage.setItem('nodejs-sidebar-collapsed', String(sidebarToggle.checked));
     syncSidebarToggleLabel();
+  });
+
+  // Dark mode toggle
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = themeToggle.querySelector('.icon');
+  const themeText = themeToggle.querySelector('.text');
+  const savedTheme = localStorage.getItem('nodejs-theme');
+  if (savedTheme === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+  function syncThemeToggle() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeIcon.textContent = isDark ? '☀️' : '🌙';
+    themeText.textContent = isDark ? 'Light' : 'Dark';
+  }
+  syncThemeToggle();
+  themeToggle.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.setItem('nodejs-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      localStorage.setItem('nodejs-theme', 'dark');
+    }
+    syncThemeToggle();
+  });
+
+  // Copy buttons on code blocks
+  document.querySelectorAll('pre').forEach(pre => {
+    const btn = document.createElement('button');
+    btn.className = 'copy-btn';
+    btn.textContent = 'Copy';
+    btn.addEventListener('click', () => {
+      const code = pre.querySelector('code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+    pre.appendChild(btn);
   });
 </script>
 </body>
