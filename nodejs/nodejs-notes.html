@@ -43,6 +43,7 @@
     max-width: 1280px;
     margin: 0 auto;
     gap: 0;
+    transition: grid-template-columns 0.22s ease;
   }
 
   .sidebar {
@@ -53,6 +54,56 @@
     overflow-y: auto;
     padding: 28px 18px 40px;
     border-right: 1px solid var(--border);
+    transition: padding 0.22s ease, transform 0.22s ease, opacity 0.22s ease;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--accent);
+    padding: 10px 14px;
+    font-size: 0.82rem;
+    font-weight: 700;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .sidebar-toggle .icon {
+    font-size: 1rem;
+    line-height: 1;
+  }
+
+  #sidebar-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  #sidebar-toggle:checked ~ .shell {
+    grid-template-columns: 0 1fr;
+  }
+
+  #sidebar-toggle:checked ~ .shell .sidebar {
+    width: 0;
+    padding: 28px 0 40px;
+    border-right: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateX(-16px);
+    pointer-events: none;
+  }
+
+  #sidebar-toggle:checked ~ .shell .content {
+    padding-left: clamp(20px, 4vw, 56px);
   }
 
   .sidebar .brand {
@@ -365,6 +416,8 @@
 </style>
 </head>
 <body>
+<input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
+<label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
 <div class="shell">
 
   <!-- ============ SIDEBAR ============ -->
@@ -1206,5 +1259,21 @@ app.<span class="t-fn">post</span>(<span class="t-str">"/user"</span>, (req, res
 
   </main>
 </div>
+
+<script>
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarToggleLabel = document.querySelector('.sidebar-toggle .text');
+  const savedState = localStorage.getItem('nodejs-sidebar-collapsed');
+  if (savedState === 'true') sidebarToggle.checked = true;
+  const syncSidebarToggleLabel = () => {
+    sidebarToggleLabel.textContent = sidebarToggle.checked ? 'Show sidebar' : 'Hide sidebar';
+    sidebarToggle.setAttribute('aria-pressed', String(sidebarToggle.checked));
+  };
+  syncSidebarToggleLabel();
+  sidebarToggle.addEventListener('change', () => {
+    localStorage.setItem('nodejs-sidebar-collapsed', String(sidebarToggle.checked));
+    syncSidebarToggleLabel();
+  });
+</script>
 </body>
 </html>

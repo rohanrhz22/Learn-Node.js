@@ -12,8 +12,14 @@
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
   background:var(--page-bg);color:var(--ink);line-height:1.65;font-size:16px}
-.shell{display:grid;grid-template-columns:270px 1fr;max-width:1280px;margin:0 auto}
-.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:24px 16px 40px;border-right:1px solid var(--border)}
+.shell{display:grid;grid-template-columns:270px 1fr;max-width:1280px;margin:0 auto;transition:grid-template-columns .22s ease}
+.sidebar{position:sticky;top:0;align-self:start;height:100vh;overflow-y:auto;padding:24px 16px 40px;border-right:1px solid var(--border);transition:padding .22s ease,transform .22s ease,opacity .22s ease}
+.sidebar-toggle{position:fixed;top:18px;left:18px;z-index:30;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);border-radius:999px;background:#fff;color:var(--accent);padding:10px 14px;font-size:.82rem;font-weight:700;box-shadow:var(--shadow);cursor:pointer;user-select:none}
+.sidebar-toggle .icon{font-size:1rem;line-height:1}
+#sidebar-toggle{position:absolute;opacity:0;pointer-events:none}
+#sidebar-toggle:checked ~ .shell{grid-template-columns:0 1fr}
+#sidebar-toggle:checked ~ .shell .sidebar{width:0;padding:24px 0 40px;border-right:0;overflow:hidden;opacity:0;transform:translateX(-16px);pointer-events:none}
+#sidebar-toggle:checked ~ .shell .content{padding-left:max(20px,4vw)}
 .sidebar .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.02rem;color:var(--accent);margin-bottom:8px;padding-left:6px}
 .sidebar .brand .logo{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--accent-bright),var(--accent));display:grid;place-items:center;color:#fff;font-weight:800;font-size:.9rem;box-shadow:var(--shadow)}
 .sidebar .partlabel{font-size:.72rem;color:var(--ink-soft);padding-left:6px;margin-bottom:18px;font-weight:600}
@@ -79,7 +85,9 @@ footer{margin-top:50px;padding:28px;text-align:center;color:var(--ink-soft);bord
 .pcard .lvl{display:inline-block;margin-top:12px;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:6px}
 .lvl.beg{background:#ecfaf1;color:#166c3c}.lvl.int{background:#eef5ff;color:#214a87}.lvl.adv{background:#fdeef0;color:#a62f43}
 @media(max-width:920px){.shell{grid-template-columns:1fr}.sidebar{display:none}}
-</style></head><body>
+ </style></head><body>
+<input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
+<label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
 <div class="shell">
 <aside class="sidebar"><div class="brand"><span class="logo">JS</span> Learn Node.js</div><div class="partlabel">Part 13 of 20</div><a class="home" href="index.html">← All parts</a><div class="nav-group-title">On this page</div><a href="#why">Why Test?</a><a href="#jest">Jest Basics</a><a href="#unit">Unit Tests</a><a href="#supertest">Integration with Supertest</a><a href="#mock">Mocking</a><a href="#coverage">Coverage</a><a href="#recap">Recap</a></aside>
 <main class="content">
@@ -172,5 +180,20 @@ test("signup sends a welcome email", async () =&gt; {
    if(lang){var s=document.createElement('span');s.className='lang';s.textContent=lang;cb.parentNode.appendChild(s);}
  });
 })();
+</script>
+<script>
+  const sidebarToggle = document.getElementById('sidebar-toggle');
+  const sidebarToggleLabel = document.querySelector('.sidebar-toggle .text');
+  const savedState = localStorage.getItem('nodejs-sidebar-collapsed');
+  if (savedState === 'true') sidebarToggle.checked = true;
+  const syncSidebarToggleLabel = () => {
+    sidebarToggleLabel.textContent = sidebarToggle.checked ? 'Show sidebar' : 'Hide sidebar';
+    sidebarToggle.setAttribute('aria-pressed', String(sidebarToggle.checked));
+  };
+  syncSidebarToggleLabel();
+  sidebarToggle.addEventListener('change', () => {
+    localStorage.setItem('nodejs-sidebar-collapsed', String(sidebarToggle.checked));
+    syncSidebarToggleLabel();
+  });
 </script>
 </body></html>
