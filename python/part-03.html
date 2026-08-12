@@ -135,7 +135,7 @@ body,.card,.sidebar,.section-banner,.callout,.diagram,td,.sidebar-toggle,.theme-
 <div class="section-banner"><div class="num">A</div><div><h2>🧩 Functions</h2><p>Name a block of logic once, reuse it everywhere.</p></div></div><div class="card"><h3><span class="tag">Core</span> Defining Functions</h3><span id="def"></span><p>Use <code class="inline">def</code> to define a function, then call it by name. Functions keep code DRY (Don't Repeat Yourself).</p><pre><code data-lang="python">def greet(name):
     print(f"Hello, {name}!")
 
-greet("Adithya")     # Hello, Adithya!
+greet("Rohan")     # Hello, Rohan!
 greet("Asha")       # Hello, Asha!</code></pre><div class="diagram"><svg viewBox="0 0 640 120" role="img"><defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/></marker></defs><rect x="20" y="24" width="188" height="64" rx="12" fill="#e3edfb" stroke="#c4d8f5"/><text x="114" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">Call greet('Asha')</text><line x1="208" y1="56" x2="226" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="226" y="24" width="188" height="64" rx="12" fill="#fff6e8" stroke="#f3dcae"/><text x="320" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">run function body</text><line x1="414" y1="56" x2="432" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="432" y="24" width="188" height="64" rx="12" fill="#d7f0e0" stroke="#c2ebd2"/><text x="526" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">print output</text></svg><div class="cap">Calling a function jumps into its body with the arguments you passed.</div></div></div><div class="card"><h3><span class="tag">Core</span> Arguments & Defaults</h3><span id="args"></span><p>Parameters can have <strong>default values</strong>, and you can pass arguments by <strong>name</strong> (keyword arguments) in any order.</p><pre><code data-lang="python">def power(base, exp=2):       # exp defaults to 2
     return base ** exp
 
@@ -150,8 +150,8 @@ def profile(**kwargs):
     for key, value in kwargs.items():
         print(key, "=", value)
 
-profile(name="Adithya", role="dev")
-# name = Adithya
+profile(name="Rohan", role="dev")
+# name = Rohan
 # role = dev</code></pre><div class="callout note"><span class="ico">📌</span><div>Read <code class="inline">*</code> as 'pack/unpack many'. You'll see <code class="inline">*args, **kwargs</code> everywhere in libraries and decorators (Part 12).</div></div></div><div class="card"><h3><span class="tag">Core</span> Return Values</h3><span id="return"></span><p><code class="inline">return</code> sends a value back to the caller. A function with no <code class="inline">return</code> gives back <code class="inline">None</code>. You can return multiple values as a tuple.</p><pre><code data-lang="python">def divmod_(a, b):
     return a // b, a % b   # returns a tuple
 
@@ -164,7 +164,7 @@ print(is_even(10))         # True</code></pre><div class="callout tip"><span cla
 square(5)            # 25
 
 # common use: a sort key
-people = [("Asha", 30), ("Adithya", 27)]
+people = [("Asha", 30), ("Rohan", 27)]
 people.sort(key=lambda p: p[1])   # sort by age</code></pre><div class="callout note"><span class="ico">📌</span><div>Use lambdas for short expressions only. If logic gets complex, a named <code class="inline">def</code> is clearer.</div></div></div><div class="card"><h3><span class="tag">Concept</span> Scope: Local vs Global</h3><span id="scope"></span><p>Variables made inside a function are <strong>local</strong> — they don't leak out. Functions can read outer (global) variables but need <code class="inline">global</code> to reassign them.</p><pre><code data-lang="python">count = 0          # global
 
 def increment():

@@ -139,7 +139,7 @@ async def greet(name):
     await asyncio.sleep(1)      # non-blocking wait
     print(f"Bye {name}")
 
-asyncio.run(greet("Adithya"))    # start the event loop</code></pre><div class="callout warn"><span class="ico">⚠️</span><div>Calling <code class="inline">greet('x')</code> alone does nothing — you must <code class="inline">await</code> it or pass it to <code class="inline">asyncio.run</code>.</div></div></div><div class="card"><h3><span class="tag">Concurrency</span> await & gather</h3><span id="await"></span><p><code class="inline">await</code> pauses until a coroutine finishes. <code class="inline">asyncio.gather</code> runs many at once and waits for all.</p><pre><code data-lang="python">async def work(n):
+asyncio.run(greet("Rohan"))    # start the event loop</code></pre><div class="callout warn"><span class="ico">⚠️</span><div>Calling <code class="inline">greet('x')</code> alone does nothing — you must <code class="inline">await</code> it or pass it to <code class="inline">asyncio.run</code>.</div></div></div><div class="card"><h3><span class="tag">Concurrency</span> await & gather</h3><span id="await"></span><p><code class="inline">await</code> pauses until a coroutine finishes. <code class="inline">asyncio.gather</code> runs many at once and waits for all.</p><pre><code data-lang="python">async def work(n):
     await asyncio.sleep(n)
     return n * 10
 

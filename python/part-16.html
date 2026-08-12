@@ -151,7 +151,7 @@ a[a &gt; 1]             # [2 3]
 np.where(a &gt; 1, "big", "small")</code></pre><div class="diagram"><svg viewBox="0 0 640 120" role="img"><defs><marker id="fa" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/></marker></defs><rect x="20" y="24" width="188" height="64" rx="12" fill="#e3edfb" stroke="#c4d8f5"/><text x="114" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">array * 2</text><line x1="208" y1="56" x2="226" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="226" y="24" width="188" height="64" rx="12" fill="#fff6e8" stroke="#f3dcae"/><text x="320" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">applied to all elements</text><line x1="414" y1="56" x2="432" y2="56" stroke="#1657c4" stroke-width="2.5" marker-end="url(#fa)"/><rect x="432" y="24" width="188" height="64" rx="12" fill="#d7f0e0" stroke="#c2ebd2"/><text x="526" y="61" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">new array</text></svg><div class="cap">One expression transforms millions of values in optimized C.</div></div></div><div class="card"><h3><span class="tag">Tables</span> pandas DataFrame</h3><span id="df"></span><p>A <strong>DataFrame</strong> is a labelled 2-D table — rows and named columns.</p><pre><code data-lang="python">import pandas as pd
 
 df = pd.DataFrame({
-    "name": ["Asha", "Adithya", "Ravi"],
+    "name": ["Asha", "Rohan", "Ravi"],
     "age":  [30, 25, 35],
     "city": ["Pune", "Pune", "Delhi"],
 })

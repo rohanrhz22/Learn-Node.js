@@ -132,7 +132,7 @@ body,.card,.sidebar,.section-banner,.callout,.diagram,td,.sidebar-toggle,.theme-
 <main class="content">
 <div class="crumbs"><a href="index.html">Learn Python</a> › <span>Part 5</span></div>
 <header class="hero"><div class="eyebrow">Part 5 of 20 · Code-first</div><h1>Strings & Formatting</h1><p>Slicing, string methods and powerful f-string formatting.</p><div class="chips"><span>🔤 str</span><span>✂️ Slicing</span><span>🧵 f-strings</span></div></header>
-<div class="section-banner"><div class="num">A</div><div><h2>🔤 Strings & Formatting</h2><p>Slice, transform and format text like a pro.</p></div></div><div class="card"><h3><span class="tag">Core</span> String Basics</h3><span id="basics"></span><p>Strings are text wrapped in quotes. They are <strong>immutable</strong> — methods return a <em>new</em> string rather than changing the original.</p><pre><code data-lang="python">name = "Adithya"
+<div class="section-banner"><div class="num">A</div><div><h2>🔤 Strings & Formatting</h2><p>Slice, transform and format text like a pro.</p></div></div><div class="card"><h3><span class="tag">Core</span> String Basics</h3><span id="basics"></span><p>Strings are text wrapped in quotes. They are <strong>immutable</strong> — methods return a <em>new</em> string rather than changing the original.</p><pre><code data-lang="python">name = "Rohan"
 multi = """spans
 multiple lines"""
 
@@ -152,9 +152,9 @@ s.replace("World", "Python")
 "a,b,c".split(",")   # ["a", "b", "c"]
 "-".join(["a","b"])  # "a-b"
 "Hello".startswith("He")   # True
-"data123".isalnum()        # True</code></pre><div class="callout tip"><span class="ico">💡</span><div>Chain methods: <code class="inline">" Hi ".strip().lower()</code> → <code class="inline">"hi"</code>.</div></div></div><div class="card"><h3><span class="tag">Format</span> f-strings — modern formatting</h3><span id="fstring"></span><p>Prefix a string with <code class="inline">f</code> and drop variables or expressions inside <code class="inline">{}</code>. This is the preferred way to build strings.</p><pre><code data-lang="python">name, age = "Adithya", 27
+"data123".isalnum()        # True</code></pre><div class="callout tip"><span class="ico">💡</span><div>Chain methods: <code class="inline">" Hi ".strip().lower()</code> → <code class="inline">"hi"</code>.</div></div></div><div class="card"><h3><span class="tag">Format</span> f-strings — modern formatting</h3><span id="fstring"></span><p>Prefix a string with <code class="inline">f</code> and drop variables or expressions inside <code class="inline">{}</code>. This is the preferred way to build strings.</p><pre><code data-lang="python">name, age = "Rohan", 27
 f"{name} is {age} years old"
-# "Adithya is 27 years old"
+# "Rohan is 27 years old"
 
 f"Next year: {age + 1}"        # inline expression
 f"{name.upper()} ❤"            # call methods inside

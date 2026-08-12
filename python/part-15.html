@@ -159,10 +159,10 @@ def test_raises():
 
 @pytest.fixture
 def sample_user():
-    return {"name": "Adithya", "age": 27}
+    return {"name": "Rohan", "age": 27}
 
 def test_name(sample_user):
-    assert sample_user["name"] == "Adithya"
+    assert sample_user["name"] == "Rohan"
 
 def test_age(sample_user):       # fresh copy each test
     assert sample_user["age"] == 25</code></pre><div class="callout note"><span class="ico">📌</span><div>Fixtures keep tests clean — set up DB connections, temp files or test data once and reuse them.</div></div></div><div class="card"><h3><span class="tag">Efficient</span> Parametrize — many cases</h3><span id="param"></span><p>Run the same test with different inputs using <code class="inline">@pytest.mark.parametrize</code>.</p><pre><code data-lang="python">import pytest
