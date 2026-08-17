@@ -544,6 +544,25 @@
   [data-theme="dark"] .diagram svg line { stroke: #3a5a8a; }
   [data-theme="dark"] .diagram svg circle { fill: var(--accent); }
 
+  /* Keep the Node.js before/after diagram legible against the dark surface. */
+  [data-theme="dark"] .node-runtime-diagram .diagram-panel {
+    fill: #202c3d;
+    stroke: #55749e;
+    stroke-width: 1.5;
+  }
+  [data-theme="dark"] .node-runtime-diagram .diagram-title,
+  [data-theme="dark"] .node-runtime-diagram .diagram-caption {
+    fill: #e4edf8;
+  }
+  [data-theme="dark"] .node-runtime-diagram .browser-chip { fill: #203d63; }
+  [data-theme="dark"] .node-runtime-diagram .browser-label { fill: #a9d1ff; }
+  [data-theme="dark"] .node-runtime-diagram .server-chip { fill: #1c4835; }
+  [data-theme="dark"] .node-runtime-diagram .server-label { fill: #9be5bd; }
+  [data-theme="dark"] .node-runtime-diagram .cli-chip { fill: #56431d; }
+  [data-theme="dark"] .node-runtime-diagram .cli-label { fill: #ffe09a; }
+  [data-theme="dark"] .node-runtime-diagram .flow-arrow,
+  [data-theme="dark"] .node-runtime-diagram .flow-arrow-head { stroke: #78b2ff; fill: #78b2ff; }
+
   @media (max-width: 920px) {
     .shell { grid-template-columns: 1fr; }
     .sidebar { display: none; }
@@ -559,6 +578,20 @@
     .sidebar-toggle { left: 12px; }
     .theme-toggle { right: 12px; }
   }
++/* Dark-mode diagram palette: preserve the meaning of each step with readable contrast. */
+[data-theme="dark"] .diagram svg rect[fill="#fff"],
+[data-theme="dark"] .diagram svg rect[fill="#ffffff"]{fill:#202c3d;stroke:#55749e}
+[data-theme="dark"] .diagram svg rect[fill="#e3edfb"]{fill:#203d63;stroke:#477bb4}
+[data-theme="dark"] .diagram svg rect[fill="#fff6e8"]{fill:#56431d;stroke:#9c7a32}
+[data-theme="dark"] .diagram svg rect[fill="#d7f0e0"]{fill:#1c4835;stroke:#438b65}
+[data-theme="dark"] .diagram svg rect[fill="#0b2a52"]{fill:#172b48;stroke:#3b6ea5}
+[data-theme="dark"] .diagram svg text[fill="#1657c4"]{fill:#a9d1ff}
+[data-theme="dark"] .diagram svg text[fill="#8a5a08"]{fill:#ffe09a}
+[data-theme="dark"] .diagram svg text[fill="#166c3c"]{fill:#9be5bd}
+[data-theme="dark"] .diagram svg text[fill="#9fd0ff"]{fill:#b9dcff}
+[data-theme="dark"] .diagram svg text[fill="#44546a"]{fill:#e4edf8}
+[data-theme="dark"] .diagram svg line{stroke:#78b2ff}
+[data-theme="dark"] .diagram svg marker path{fill:#78b2ff}
 </style>
 </head>
 <body>
@@ -670,31 +703,31 @@
         <li><strong>Node.js</strong> lets JavaScript run on your <strong>computer / server</strong>.</li>
         <li>Used for: <strong>Backend APIs</strong>, <strong>web servers</strong>, and <strong>tools &amp; scripts</strong>.</li>
       </ul>
-      <div class="diagram">
+      <div class="diagram node-runtime-diagram">
         <svg viewBox="0 0 640 150" role="img" aria-label="Before and after Node.js">
           <defs>
             <marker id="arr2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
-              <path d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
+              <path class="flow-arrow-head" d="M0,0 L7,3 L0,6 Z" fill="#1657c4"/>
             </marker>
           </defs>
           <!-- before -->
-          <rect x="20" y="40" width="250" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
-          <text x="145" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">BEFORE NODE.JS</text>
-          <rect x="95" y="62" width="100" height="36" rx="8" fill="#e3edfb"/>
-          <text x="145" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#1657c4">🌐 Browser</text>
-          <text x="145" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS only in browser</text>
+          <rect class="diagram-panel" x="20" y="40" width="250" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
+          <text class="diagram-title" x="145" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">BEFORE NODE.JS</text>
+          <rect class="browser-chip" x="95" y="62" width="100" height="36" rx="8" fill="#e3edfb"/>
+          <text class="browser-label" x="145" y="85" text-anchor="middle" font-size="13" font-weight="700" fill="#1657c4">🌐 Browser</text>
+          <text class="diagram-caption" x="145" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS only in browser</text>
           <!-- arrow -->
-          <line x1="285" y1="80" x2="345" y2="80" stroke="#1657c4" stroke-width="3" marker-end="url(#arr2)"/>
+          <line class="flow-arrow" x1="285" y1="80" x2="345" y2="80" stroke="#1657c4" stroke-width="3" marker-end="url(#arr2)"/>
           <!-- after -->
-          <rect x="360" y="40" width="260" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
-          <text x="490" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">AFTER NODE.JS</text>
-          <rect x="378" y="62" width="76" height="36" rx="8" fill="#e3edfb"/>
-          <text x="416" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">🌐 Browser</text>
-          <rect x="464" y="62" width="76" height="36" rx="8" fill="#d7f0e0"/>
-          <text x="502" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">💻 Server</text>
-          <rect x="550" y="62" width="56" height="36" rx="8" fill="#fbeec9"/>
-          <text x="578" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">🛠 CLI</text>
-          <text x="490" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS runs everywhere</text>
+          <rect class="diagram-panel" x="360" y="40" width="260" height="80" rx="12" fill="#fff" stroke="#d6e3f5"/>
+          <text class="diagram-title" x="490" y="32" text-anchor="middle" font-size="12" font-weight="700" fill="#44546a">AFTER NODE.JS</text>
+          <rect class="browser-chip" x="378" y="62" width="76" height="36" rx="8" fill="#e3edfb"/>
+          <text class="browser-label" x="416" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#1657c4">🌐 Browser</text>
+          <rect class="server-chip" x="464" y="62" width="76" height="36" rx="8" fill="#d7f0e0"/>
+          <text class="server-label" x="502" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#166c3c">💻 Server</text>
+          <rect class="cli-chip" x="550" y="62" width="56" height="36" rx="8" fill="#fbeec9"/>
+          <text class="cli-label" x="578" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#8a5a08">🛠 CLI</text>
+          <text class="diagram-caption" x="490" y="135" text-anchor="middle" font-size="11" fill="#44546a">JS runs everywhere</text>
         </svg>
         <div class="cap">Node.js takes JavaScript out of the browser and runs it anywhere.</div>
       </div>

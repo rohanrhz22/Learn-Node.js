@@ -118,7 +118,21 @@ pre .copy-btn:hover{background:rgba(255,255,255,.2)}
 pre .copy-btn.copied{background:var(--green);color:#fff;border-color:var(--green);opacity:1}
 body,.card,.sidebar,.section-banner,.callout,.diagram,td,.sidebar-toggle,.theme-toggle,pre,.learned li{transition:background .3s ease,color .3s ease,border-color .3s ease}
 @media(max-width:920px){.shell{grid-template-columns:1fr}.sidebar{display:none}}
- </style></head><body>
++/* Dark-mode diagram palette: preserve the meaning of each step with readable contrast. */
+[data-theme="dark"] .diagram svg rect[fill="#fff"],
+[data-theme="dark"] .diagram svg rect[fill="#ffffff"]{fill:#202c3d;stroke:#55749e}
+[data-theme="dark"] .diagram svg rect[fill="#e3edfb"]{fill:#203d63;stroke:#477bb4}
+[data-theme="dark"] .diagram svg rect[fill="#fff6e8"]{fill:#56431d;stroke:#9c7a32}
+[data-theme="dark"] .diagram svg rect[fill="#d7f0e0"]{fill:#1c4835;stroke:#438b65}
+[data-theme="dark"] .diagram svg rect[fill="#0b2a52"]{fill:#172b48;stroke:#3b6ea5}
+[data-theme="dark"] .diagram svg text[fill="#1657c4"]{fill:#a9d1ff}
+[data-theme="dark"] .diagram svg text[fill="#8a5a08"]{fill:#ffe09a}
+[data-theme="dark"] .diagram svg text[fill="#166c3c"]{fill:#9be5bd}
+[data-theme="dark"] .diagram svg text[fill="#9fd0ff"]{fill:#b9dcff}
+[data-theme="dark"] .diagram svg text[fill="#44546a"]{fill:#e4edf8}
+[data-theme="dark"] .diagram svg line{stroke:#78b2ff}
+[data-theme="dark"] .diagram svg marker path{fill:#78b2ff}
+</style></head><body>
 <input type="checkbox" id="sidebar-toggle" aria-label="Minimize sidebar">
 <label class="sidebar-toggle" for="sidebar-toggle"><span class="icon">☰</span><span class="text">Hide sidebar</span></label>
 <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode"><span class="icon">&#127769;</span><span class="text">Dark</span></button>
